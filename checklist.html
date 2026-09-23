@@ -50,20 +50,6 @@
 <div id="toastHost"></div>
 <div id="app"></div>
 
-<!-- ===== TEST ONLY: Supabase sign-up form + checklist checkbox =====
-     These show at the bottom of every page. The form is wired up in
-     script.js section 22 and writes to the Supabase users table.
-     Kept until you decide whether to remove them (see README). -->
-<form id="signupForm">
-  <input type="text" id="fullName" placeholder="Full Name" required>
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="text" id="gradeLevel" placeholder="Grade Level" required>
-  <input type="text" id="section" placeholder="Section" required>
-  <button type="submit">Sign Up</button>
-</form>
-
-<input type="checkbox" onclick="saveChecklistResponse(1, this.checked)">
-
 <!-- ===== Scripts: Supabase library first, then the app ===== -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="script.js" defer></script>
