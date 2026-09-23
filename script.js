@@ -308,6 +308,7 @@ const ADV_LEVELS = [
 const LEVELS = [...CORE_LEVELS, ...ADV_LEVELS]; // master lookup list (core + advanced) used by generic level/lesson/checklist/quiz logic
 const ALL_CHECKLIST = CORE_LEVELS.flatMap(l=>l.checklist.map(c=>({...c, levelId:l.id, levelTitle:l.title})));
 const LEVEL_XP = 100, TOTAL_XP = LEVEL_XP*CORE_LEVELS.length, ADV_TOTAL_XP = LEVEL_XP*ADV_LEVELS.length;
+const CHECKLIST_ITEM_COUNT = LEVELS.reduce((n,l)=>n+l.checklist.length,0); // every checklist item, all 10 levels
 
 /* =========================================================
    5. HABIT MODE CONTENT
@@ -781,7 +782,8 @@ function showCertCelebration(kind){
       </div>
     </div>`;
   document.body.appendChild(overlay);
-  const close = ()=> overlay.remove();
+  document.body.classList.add('celebrating'); // hides the page's own Lockie (one Lockie on screen at a time)
+  const close = ()=>{ overlay.remove(); document.body.classList.remove('celebrating'); };
   overlay.querySelector('#celebCloseBtn').addEventListener('click', close);
   overlay.querySelector('#celebViewCertBtn').addEventListener('click', ()=>{
     close(); STATE.view='certificate'; render(true);
@@ -815,7 +817,7 @@ return `
     <div class="hero-stats reveal" style="animation-delay:.24s">
       <div class="hero-stat"><b data-count="${LEVELS.length}">0</b><span>Levels</span></div>
       <div class="hero-stat"><b data-count="${TOTAL_XP+ADV_TOTAL_XP}">0</b><span>Total XP</span></div>
-      <div class="hero-stat"><b data-count="${ALL_CHECKLIST.length}">0</b><span>Safety habits</span></div>
+      <div class="hero-stat"><b data-count="${CHECKLIST_ITEM_COUNT}">0</b><span>Safety habits</span></div>
       <div class="hero-stat"><b data-count="${Object.keys(BADGE_DEFS).length}">0</b><span>Badges</span></div>
     </div>
   </div>
@@ -850,7 +852,20 @@ return `
 
 <section class="section" style="padding-top:0"><div class="container">
   <div class="section-head reveal">
-    <div class="eyebrow">Beyond the 5 Levels</div>
+    <div class="eyebrow">Your Journey</div>
+    <h2>Five levels to Password Safety Champion</h2>
+  </div>
+  <div class="path-track">${pathItems(CORE_LEVELS)}</div>
+  <div class="section-head reveal" style="margin-top:56px">
+    <div class="eyebrow">Advanced Track</div>
+    <h2>Five more levels to Cyber Sentinel</h2>
+  </div>
+  <div class="path-track">${pathItems(ADV_LEVELS)}</div>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section-head reveal">
+    <div class="eyebrow">Beyond the 10 Levels</div>
     <h2>Your quest doesn't end at the certificate</h2>
     <p>Keep coming back for daily missions, weekly challenges, a rotating tip of the day, and a monthly password check-up.</p>
   </div>
@@ -858,16 +873,6 @@ return `
     <div class="feature-card reveal tilt-card"><div class="feature-icon" style="background:var(--grad-1)">📆</div><h3>Daily Missions</h3><p>Three fresh micro-tasks every 24 hours, each worth bonus XP.</p></div>
     <div class="feature-card reveal tilt-card" style="animation-delay:.08s"><div class="feature-icon" style="background:var(--grad-2)">🏁</div><h3>Weekly Challenges</h3><p>A featured challenge every week that unlocks an exclusive badge.</p></div>
     <div class="feature-card reveal tilt-card" style="animation-delay:.16s"><div class="feature-icon" style="background:var(--grad-gold)">📊</div><h3>Leaderboard</h3><p>Opt in to see how your XP stacks up against fellow Paulinians.</p></div>
-  </div>
-</div></section>
-
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="section-head reveal">
-    <div class="eyebrow">Your Journey</div>
-    <h2>Five levels to Password Safety Champion</h2>
-  </div>
-  <div class="path-track">
-    ${CORE_LEVELS.map((l,i)=>`<div class="path-item reveal" style="animation-delay:${i*.07}s"><div class="path-num">${l.id}</div><div class="path-body"><h4>${l.title}</h4><p>${l.tagline}</p></div></div>`).join('')}
   </div>
 </div></section>
 
@@ -912,6 +917,10 @@ return `
   <p>© 2026 PassQuest · Researched &amp; created by Dizon and Camantigue · St. Paul University Manila SHS</p>
 </div></div>
 `;
+}
+
+function pathItems(list){
+  return list.map((l,i)=>`<div class="path-item reveal" style="animation-delay:${i*.07}s"><div class="path-num">${l.id}</div><div class="path-body"><h4>${l.title}</h4><p>${l.tagline}</p></div></div>`).join('');
 }
 
 /* ---------- login / register ---------- */
@@ -996,14 +1005,16 @@ function viewAppShell(){
   const p = STATE.progress;
   const user = STATE.users.find(u=>u.username===STATE.session);
   const initials = (user?.name||'U').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  // Order follows the learning flow: learn, practise, keep the habit, get rewarded.
   const tabs = [
-    ['dashboard','🏠','Dashboard'],['levels','🗺️','Levels'],['hub','🔁','Habit Mode'],['checklist','✅','Checklist'],
-    ['checker','🔍','Password Checker'],['leaderboard','📊','Rankings'],['certificate','🏆','Certificate']
+    ['dashboard','🏠','Dashboard'],['levels','🗺️','Learning Path'],['checklist','✅','Checklist'],
+    ['checker','🔍','Password Checker'],['hub','🔁','Habit Mode'],['leaderboard','📊','Leaderboard'],['certificate','🏆','Certificates']
   ];
+  const activeTab = STATE.view==='level-detail' ? 'levels' : STATE.view;
   return `
   <div class="topbar"><div class="container topbar-inner">
-    <div class="brand">${ICONS.logo}PassQuest</div>
-    <div class="tabs">${tabs.map(([id,ic,label])=>`<button class="tab ${STATE.view===id?'active':''}" data-go="${id}">${ic} ${label}</button>`).join('')}</div>
+    <button class="brand" data-go="dashboard" title="Go to your dashboard">${ICONS.logo}PassQuest</button>
+    <div class="tabs">${tabs.map(([id,ic,label])=>`<button class="tab ${activeTab===id?'active':''}" data-go="${id}">${ic} ${label}</button>`).join('')}</div>
     <div class="topbar-right">
       <div class="streak-chip">🔥 ${p.streak} day streak</div>
       <button class="avatar" data-go="profile" title="Profile">${initials}</button>
@@ -1038,7 +1049,7 @@ function habitModeUnlocked(){ return totalXP()>=TOTAL_XP && advTotalXP()>=ADV_TO
 function todaysQuestMarkup(){
   if(!habitModeUnlocked()){
     const remaining = LEVELS.filter(l=>!isLevelComplete(l.id)).length;
-    return `<div class="card adv-teaser reveal">
+    return `<div class="card adv-teaser reveal" style="margin-top:20px">
       <div class="adv-teaser-ico">🔁</div>
       <div>
         <h3 style="font-size:16px;margin-bottom:6px">Habit Mode — locked</h3>
@@ -1102,7 +1113,12 @@ function recommendedActivities(){
 function viewDashboard(user){
   const p = STATE.progress;
   const t = totalXP();
-  const pct = Math.min(100,Math.round((t/TOTAL_XP)*100));
+  const allDone = habitModeUnlocked();
+  // the progress bar follows the track the student is on
+  const onAdvanced = t>=TOTAL_XP;
+  const trackXP = onAdvanced ? advTotalXP() : t;
+  const trackMax = onAdvanced ? ADV_TOTAL_XP : TOTAL_XP;
+  const pct = Math.min(100,Math.round((trackXP/trackMax)*100));
   const curLevel = currentLevelNumber();
   const lvl = LEVELS.find(l=>l.id===curLevel);
   const lvlPct = Math.min(100, levelEarnedXP(curLevel));
@@ -1113,12 +1129,12 @@ function viewDashboard(user){
   <div class="page-head"><div><h1>Welcome back, ${user.name.split(' ')[0]} 👋</h1><p>Here's where your quest stands today.</p></div></div>
 
   <div class="continue-card">
-    <div><h3>${t>=TOTAL_XP?'You completed PassQuest! 🎉':`Continue: Level ${curLevel} — ${lvl.title}`}</h3>
-      <p>${t>=TOTAL_XP? 'Your certificate is ready to download.' : lvl.tagline}</p></div>
-    <button class="btn btn-primary" data-go="${t>=TOTAL_XP?'certificate':'level-detail'}" data-level="${curLevel}">${t>=TOTAL_XP?'View certificate →':'Resume quest →'}</button>
+    <div><h3>${allDone?'You completed PassQuest! 🎉':`Continue: Level ${curLevel} — ${lvl.title}`}</h3>
+      <p>${allDone? 'Both of your certificates are ready to download.' : lvl.tagline}</p></div>
+    <button class="btn btn-primary" data-go="${allDone?'certificate':'level-detail'}" data-level="${curLevel}">${allDone?'View certificates →':'Resume quest →'}</button>
   </div>
 
-  ${todaysQuestMarkup()}
+  ${allDone ? todaysQuestMarkup() : ''}
 
   <div class="dash-grid">
     <div class="card">
@@ -1131,12 +1147,12 @@ function viewDashboard(user){
         </div>
       </div>
       <div class="xp-block">
-        <div class="xp-row"><span>Overall progress</span><b>${t} / ${TOTAL_XP} XP</b></div>
+        <div class="xp-row"><span>${onAdvanced?'Advanced Track':'Foundation Track'} progress</span><b>${trackXP} / ${trackMax} XP</b></div>
         <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-mini"><b>${completedLessons}/5</b><span>Lessons</span></div>
-        <div class="stat-mini"><b>${completedChecklist}/${ALL_CHECKLIST.length}</b><span>Checklist</span></div>
+        <div class="stat-mini"><b>${completedLessons}/${LEVELS.length}</b><span>Lessons</span></div>
+        <div class="stat-mini"><b>${completedChecklist}/${CHECKLIST_ITEM_COUNT}</b><span>Checklist</span></div>
         <div class="stat-mini"><b>${p.badges.length}</b><span>Badges</span></div>
         <div class="stat-mini"><b>${bonusXP()}</b><span>Bonus XP</span></div>
       </div>
@@ -1172,10 +1188,15 @@ function viewDashboard(user){
   <div class="section-title">Level map</div>
   ${levelGridMarkup(CORE_LEVELS)}
   ${advancedTrackBlock()}
+  ${allDone ? '' : todaysQuestMarkup()}
   `;
 }
 
 /* ---------- advanced track (shared between dashboard + levels page) ---------- */
+function listTitles(list){
+  const t = list.map(l=>l.title.replace(/&/g,'&amp;'));
+  return t.slice(0,-1).join(', ') + ', and ' + t[t.length-1];
+}
 function advancedTrackBlock(){
   const unlocked = isLevelUnlocked(CORE_LEVELS.length+1);
   if(!unlocked){
@@ -1183,7 +1204,7 @@ function advancedTrackBlock(){
       <div class="adv-teaser-ico">🚀</div>
       <div>
         <h3 style="font-size:16px;margin-bottom:6px">Advanced Track — locked</h3>
-        <p style="color:var(--text-dim);font-size:13.5px">Earn your Password Safety Champion certificate by completing all 5 core levels to unlock 3 bonus levels: Phishing &amp; Social Engineering, Account Recovery &amp; Breach Response, and Device &amp; Browser Security.</p>
+        <p style="color:var(--text-dim);font-size:13.5px">Earn your Password Safety Champion certificate by completing all 5 core levels to unlock 5 more levels: ${listTitles(ADV_LEVELS)}.</p>
       </div>
     </div>`;
   }
@@ -1196,6 +1217,7 @@ function advancedTrackBlock(){
 /* ---------- levels ---------- */
 function viewLevels(){
   return `<div class="page-head"><div><h1>Learning Path</h1><p>Complete each level's lesson, checklist, and quiz to earn 100 XP and unlock the next.</p></div></div>
+  <div class="section-title">🛡️ Foundation Track ${totalXP()>=TOTAL_XP?'<span class="xp-tag">Complete ✓</span>':''}</div>
   ${levelGridMarkup(CORE_LEVELS)}
   ${advancedTrackBlock()}`;
 }
@@ -1208,7 +1230,7 @@ function levelGridMarkup(list){
       const xp = levelEarnedXP(l.id);
       return `<div class="level-card ${unlocked?'':'locked'} ${done?'done':''} ${l.advanced?'adv':''}" ${unlocked?`data-go="level-detail" data-level="${l.id}"`:''} style="${unlocked?'cursor:pointer':''}">
         ${done?'<div class="level-badge-done">✅</div>':(!unlocked?'<div class="lock-icon">🔒</div>':'')}
-        <div class="level-num">${l.advanced? l.id-CORE_LEVELS.length : l.id}</div>
+        <div class="level-num">${l.id}</div>
         <h3>${l.title}</h3>
         <p>${l.tagline}</p>
         <div class="bar-track sm"><div class="bar-fill" style="width:${xp}%"></div></div>
@@ -1228,9 +1250,12 @@ function viewLevelDetail(){
   let body = '';
   if(STATE.levelTab==='lesson'){
     body = `<div class="lesson-body">${lvl.lesson}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px">
+      <div class="step-actions">
         <span class="xp-tag">+20 XP on completion</span>
-        <button class="btn ${lessonDone?'btn-ghost':'btn-primary'}" id="markLessonBtn" ${lessonDone?'disabled':''}>${lessonDone?'✓ Completed':'Mark as read'}</button>
+        <div class="step-buttons">
+          <button class="btn ${lessonDone?'btn-ghost':'btn-primary'}" id="markLessonBtn" ${lessonDone?'disabled':''}>${lessonDone?'✓ Completed':'Mark as read'}</button>
+          ${lessonDone?'<button class="btn btn-primary" data-dtab="checklist">Next: Checklist →</button>':''}
+        </div>
       </div>`;
   } else if(STATE.levelTab==='checklist'){
     body = `<div class="checklist-list">${lvl.checklist.map(c=>{
@@ -1240,13 +1265,17 @@ function viewLevelDetail(){
         <div class="check-text"><b>${c.text}</b><span>${c.detail}</span></div>
         <span class="xp-tag">+${c.xp} XP</span>
       </div>`;
-    }).join('')}</div>`;
+    }).join('')}</div>
+    ${lvl.checklist.every(c=>p.checklistDone.includes(c.id)) ? `<div class="step-actions">
+      <span class="xp-tag">✓ All ${lvl.checklist.length} items checked</span>
+      <div class="step-buttons"><button class="btn btn-primary" data-dtab="quiz">Next: Quiz →</button></div>
+    </div>` : ''}`;
   } else {
     body = renderQuiz(lvl);
   }
 
   return `
-  <button class="btn btn-ghost btn-sm" data-go="levels" style="margin-bottom:18px">← Back to levels</button>
+  <button class="btn btn-ghost btn-sm" data-go="levels" style="margin-bottom:18px">← Back to Learning Path</button>
   <div class="page-head">
     <div><h1>Level ${lvl.id}: ${lvl.title}</h1><p>${lvl.tagline}</p></div>
   </div>
@@ -1259,6 +1288,13 @@ function viewLevelDetail(){
   `;
 }
 
+// Shown on a finished quiz: go on to the next level, or into Habit Mode after Level 10.
+function nextLevelButton(lvl){
+  const next = LEVELS.find(l=>l.id===lvl.id+1);
+  if(next) return isLevelUnlocked(next.id) ? `<button class="btn btn-primary" data-go="level-detail" data-level="${next.id}">Next: Level ${next.id} →</button>` : '';
+  return habitModeUnlocked() ? `<button class="btn btn-primary" data-go="hub">Open Habit Mode →</button>` : '';
+}
+
 function renderQuiz(lvl){
   const p = STATE.progress;
   const existing = p.quizDone[lvl.id];
@@ -1269,7 +1305,10 @@ function renderQuiz(lvl){
       <div class="score-ring" style="--pct:${pct}"><b>${pct}%</b></div>
       <h3 style="margin-bottom:6px">Quiz complete!</h3>
       <p style="color:var(--text-dim);margin-bottom:22px">You scored ${existing.correct} out of ${existing.total} correct, earning ${existing.xpAwarded} XP.</p>
-      <button class="btn btn-outline" id="retakeQuizBtn">Retake for practice</button>
+      <div class="step-buttons" style="justify-content:center">
+        <button class="btn btn-outline" id="retakeQuizBtn">Retake for practice</button>
+        ${nextLevelButton(lvl)}
+      </div>
     </div>`;
   }
 
@@ -1527,17 +1566,17 @@ function viewLeaderboard(user){
 function viewCertificate(user){
   const t = totalXP();
   if(t < TOTAL_XP){
-    return `<div class="page-head"><div><h1>Certificate</h1><p>Complete all 5 levels to unlock your certificate.</p></div></div>
+    return `<div class="page-head"><div><h1>Certificates</h1><p>Complete all 5 Foundation Track levels to unlock your first certificate.</p></div></div>
     <div class="cert-lock">
       <div class="big-ico">🔒</div>
       <h3 style="margin-bottom:8px">Certificate locked</h3>
-      <p style="color:var(--text-dim);margin-bottom:20px">You've earned ${t} / ${TOTAL_XP} XP. Finish every level to unlock your "Password Safety Champion" certificate.</p>
+      <p style="color:var(--text-dim);margin-bottom:20px">You've earned ${t} / ${TOTAL_XP} XP. Finish every Foundation Track level to unlock your "Password Safety Champion" certificate.</p>
       <button class="btn btn-primary" data-go="levels">Continue learning →</button>
     </div>`;
   }
   saveCertificate();
   const today = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  return `<div class="page-head"><div><h1>Your Certificate</h1><p>Congratulations, you've completed PassQuest!</p></div></div>
+  return `<div class="page-head"><div><h1>Your Certificate</h1><p>${advTotalXP()>=ADV_TOTAL_XP ? "Congratulations, you've completed PassQuest!" : "Congratulations, you've completed the Foundation Track!"}</p></div></div>
   <div class="cert-wrap">
     <div class="cert-photo-frame">
       <div class="cert-photo" style="background-image:url('${CERT_TEMPLATE_URI}')">
@@ -1812,7 +1851,7 @@ function bindEvents(){
   if(logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
   document.querySelectorAll('[data-dtab]').forEach(el=>{
-    el.addEventListener('click',()=>{ STATE.levelTab = el.getAttribute('data-dtab'); STATE.quizIndex=0; STATE.quizPicked=null; render(); });
+    el.addEventListener('click',()=>{ STATE.levelTab = el.getAttribute('data-dtab'); STATE.quizIndex=0; STATE.quizPicked=null; render(!el.classList.contains('dtab')); });
   });
 
   const markLessonBtn = document.getElementById('markLessonBtn');
