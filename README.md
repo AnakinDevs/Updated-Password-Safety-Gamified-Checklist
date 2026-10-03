@@ -1,8 +1,8 @@
 # PassQuest
 
-Gamified web app for teaching SHS students safe password habits — research output for *Analyzing SHS Students' Social Media Password Safety Habits at St. Paul University Manila Toward a Gamified Website Checklist* (St. Paul University Manila).
+Gamified web app for teaching SHS students safe password habits — research output for *Analyzing Senior High School Students' Social Media Password Safety Habits at St. Paul University Manila Toward a Gamified Website Checklist* (St. Paul University Manila).
 
-Created by **Dizon** and **Camantigue**, Grade 12 STEM Researchers & Creators of PassQuest, St. Paul University Manila.
+Created by **Maryan Dizon** and **Kirk Camantigue**, Grade 12 STEM Researchers & Creators of PassQuest, St. Paul University Manila.
 
 - [How the research shapes PassQuest](#how-the-research-shapes-passquest)
 - [Password Games](#password-games)
@@ -24,15 +24,15 @@ PassQuest is built as a **gamified learning + practice checklist**. Every level 
 | 2 | Strong Password Creation | Security & Risk Awareness, Convenience & Memorability |
 | 3 | Predictable Passwords & Personal Information | Convenience & Memorability, Personal Experiences, Social Influence |
 | 4 | Password Management | Password Management Strategies, Convenience, Social Influence |
-| 5 | **Password Maintenance** (SOP 2 lowest: 2.45, “Sometimes”) | Password Management Strategies, Awareness, Personal Experiences |
+| 5 | **Password Maintenance** (SOP 2 lowest: 2.45, “Sometimes Practiced”) | Password Management Strategies, Awareness, Personal Experiences |
 | 6 | Two-Factor Authentication & Account Protection | Awareness, Password Management Strategies |
 | 7 | Phishing & Social Engineering | Awareness, Social Influence, Password Management Strategies |
 | 8 | Account Recovery & Data Breaches | Personal Experiences, Awareness, Password Management Strategies |
-| 9 | **Safe Login & Device Security** (SOP 2 highest: 3.65, “Always”) | Awareness, Password Management Strategies |
+| 9 | **Safe Login & Device Security** (SOP 2 highest: 3.65, “Always Practiced”) | Awareness, Password Management Strategies |
 | 10 | Cybersecurity Challenge (capstone) | All five factors |
 
 - **SOP 1 (five factors)** shows up as the scenarios and activities in each level. Every level and scenario is tagged with the factors it came from, and the tags appear on the level page.
-- **SOP 2 (grand mean 3.1075, “Often”)** decides the emphasis:
+- **SOP 2 (grand mean 3.1075, “Often Practiced”)** decides the emphasis:
   - Level 5, the monthly check-up, and the maintenance missions focus on the lowest-rated habit, updating passwords. They teach *intentional* maintenance, not constant changes.
   - Level 9 reinforces the highest-rated habit, safe logins on shared devices, with positive feedback.
 - The **About the research** page (link in the app footer) and the landing page explain all of this for panelists and visitors.
@@ -40,13 +40,15 @@ PassQuest is built as a **gamified learning + practice checklist**. Every level 
 
 ## Password Games
 
-The **🎮 Password Games** tab has three optional mini-games. They practice the same findings as the levels and use the existing XP and badge systems; they don't add new ones.
+The **🎮 Password Games** tab has three optional mini-games. They use the existing XP and badge systems; they don't add new ones.
+
+On the site, the games are presented as optional extra practice: they're reached from the tab only (not featured on the homepage), and the game screens don't mention the research. The research link below is for the researchers and panelists.
 
 | Game | How it plays | Research link |
 |---|---|---|
 | ⚡ **Reflex Sort** | Arcade, 45 seconds. Fictional passwords fly across the screen; tap only the weak ones. Speed goes up over time. Shows score, accuracy, combo (up to x4) and best score. | Security & Risk Awareness, Convenience & Memorability: spotting names, birthdays, common words and keyboard patterns. |
 | 🚨 **Escape the Breach** | Timed story, 2 minutes, 4 tasks on the fictional account @mika.draws: spot the phishing message, take back control (including a friend's bad password advice), turn on 2FA and refuse to share the login code, then log out of a library PC and an unknown phone. | Personal Experiences, Awareness, Password Management Strategies, Social Influence. SOP 2: updating the password after a suspicious login (lowest, 2.45) and logging out of shared devices (highest, 3.65). |
-| 🧩 **Password Challenge** | Puzzle, any pace. Build one fictional password while 18 rules appear one by one; every earlier rule still counts. Mixes silly rules (a color, an animal, a palindrome, no letter E) with research rules (no dates, no own name, no predictable patterns). Original rules and design, inspired by rule-stacking password games. | Convenience & Memorability, Awareness, Password Management Strategies, Personal Experiences. |
+| 🧩 **Password Challenge** | Puzzle, any pace. Build one fictional password while 18 rules appear one by one; every earlier rule still counts. Mixes silly rules (a color, an animal, a palindrome, no letter E) with safety rules, marked “safety rule” (no dates, no own name, no predictable patterns). Original rules and design, inspired by rule-stacking password games. | Convenience & Memorability, Awareness, Password Management Strategies, Personal Experiences. |
 
 - **Privacy:** before Password Challenge starts, the game shows *"Use a fictional password only. Never enter a password you actually use."* The typed password is checked in the browser only. It is never saved to localStorage or sent to Supabase, and the box is cleared when the game ends.
 - **XP:** game XP goes into bonus XP, the same pot as Habit Mode, so it counts toward lifetime and leaderboard XP but never toward level progress or certificates. Each game gives at most **25 XP per day**, so replays can't farm the leaderboard.
@@ -112,7 +114,7 @@ To jump to a section, search the file for its number and a dot, for example `14.
 | Badge names, icons, descriptions | `script.js` section 6 (`BADGE_DEFS`) |
 | Lockie's look and poses | `script.js` section 11 (`mascotSVG`) |
 | Lockie's password-coach lines | `script.js` section 18 (`coachAdvice`) |
-| Game names, descriptions, research text, takeaways, daily XP cap | `script.js` section 17 (`GAMES`, `GAME_TAKEAWAYS`, `GAME_XP_DAILY_CAP`) |
+| Game names, descriptions, "What Each Game Practices" text, takeaways, daily XP cap | `script.js` section 17 (`GAMES`, `GAME_TAKEAWAYS`, `GAME_XP_DAILY_CAP`) |
 | Reflex Sort passwords | `script.js` section 17 (`REFLEX_WEAK`, `REFLEX_STRONG`) |
 | Escape the Breach story and choices | `script.js` section 17 (`BREACH_STEPS`) |
 | Password Challenge rules and word lists | `script.js` section 17 (`PC_RULES`, `PC_COLORS`, `PC_ANIMALS`, `PC_FOODS`). Any new rule must still be solvable together with all the others. |
@@ -124,6 +126,8 @@ To jump to a section, search the file for its number and a dot, for example `14.
 | Certificate name/date/grade positions | **both** `style.css` section 17 (on-screen preview) **and** `script.js` section 21 (downloaded PNG). Keep them in sync. |
 | Certificate template images | `script.js` section 24 |
 | Favicon | `<head>` of `checklist.html` |
+
+**Capitalization:** headings, page and section titles, lesson headings, activity and scenario titles, categories, feature names, game titles and tabs use title case (short words like *a, the, and, of, to, by, from* stay lowercase: *Escape the Breach*). Sentences, buttons, quiz questions and reaction messages (*Quiz complete!*, *Account secured!*) stay in sentence case.
 
 Each level must add up to 100 XP: Learn + Practice 20 (earned by finishing the practice) + checklist 30 + quiz 50. **Keep checklist `id`s and XP values unchanged.** Saved progress and Supabase records use them.
 

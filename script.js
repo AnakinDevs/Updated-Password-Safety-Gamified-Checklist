@@ -80,9 +80,9 @@ const FACTORS = {
 
 /* SOP 2 findings (survey means) that decide which habits get extra emphasis. */
 const SOP2 = {
-  grandMean: {value:'3.1075', verbal:'Often'},
-  highest:   {value:'3.65', verbal:'Always',    habit:'Being careful when logging in on shared or public devices', level:9},
-  lowest:    {value:'2.45', verbal:'Sometimes', habit:'Updating or changing social media passwords',               level:5}
+  grandMean: {value:'3.1075', verbal:'Often Practiced'},
+  highest:   {value:'3.65', verbal:'Always Practiced',    habit:'Being careful when logging in on shared or public devices', level:9},
+  lowest:    {value:'2.45', verbal:'Sometimes Practiced', habit:'Updating or changing social media passwords',               level:5}
 };
 
 /* Skill areas shown on the dashboard as learning progress (not a security score). */
@@ -102,16 +102,16 @@ const CORE_LEVELS = [
  {
   id:1, title:"Password Basics", tagline:"Why your password is your first line of defense",
   factors:['awareness','experience'],
-  lesson:`<h4>Why passwords matter</h4>
+  lesson:`<h4>Why Passwords Matter</h4>
    <p>A password is the secret that proves an account is really yours. Every social media account you own (Facebook, Instagram, TikTok, Messenger) is protected by one thing standing between your personal life and a stranger: your password. For Senior High School students, accounts often hold private chats, photos, and school-related information worth protecting.</p>
-   <h4>Weak vs. strong at a glance</h4>
+   <h4>Weak vs. Strong at a Glance</h4>
    <ul><li><b>Weak:</b> short, common, or easy to guess from your profile, like "iloveyou", "password123", or your name plus birth year</li><li><b>Strong:</b> long, unpredictable, and used for only one account</li></ul>
-   <h4>Common password mistakes</h4>
+   <h4>Common Password Mistakes</h4>
    <ul><li>Using your name, birthday, or nickname</li><li>Using short, common words like "iloveyou" or "password123"</li><li>Reusing the same simple password everywhere</li></ul>
-   <h4>Why accounts get hacked</h4>
+   <h4>Why Accounts Get Hacked</h4>
    <p>Most account takeovers aren't sophisticated — they happen because a password was easy to guess, was reused elsewhere, or was handed over in a scam. Understanding this is the first step to preventing it.</p>`,
   practice:{
-    activity:{title:"Spot the weak password", prompt:"These are fictional passwords. Is each one safer or riskier?", labels:['Safer','Riskier'],
+    activity:{title:"Spot the Weak Password", prompt:"These are fictional passwords. Is each one safer or riskier?", labels:['Safer','Riskier'],
       items:[
         {text:"juan2008", answer:1, why:"A name plus a birth year can be guessed from a profile in seconds."},
         {text:"Coral-Sunset42-River", answer:0, why:"Long and unpredictable, with nothing tied to the owner."},
@@ -120,7 +120,7 @@ const CORE_LEVELS = [
         {text:"Tsinelas-Rocket-Mango-42", answer:0, why:"Four unrelated words make it long, hard to guess, and still memorable."}
       ]},
     scenarios:[
-      {title:"Learning from a locked-out account", factors:['experience','awareness'], who:'🧑‍🎓',
+      {title:"Learning from a Locked-Out Account", factors:['experience','awareness'], who:'🧑‍🎓',
        story:"Mia's cousin guessed her Instagram password, “mia2009”, as a joke. It matched the birth year in her bio. Mia got her account back and now needs a new password.",
        opts:[
         {t:"Use “mia2010” so it's different but still easy", ok:false, fb:"Changing one number keeps the same guessable pattern. Her name and birth year are still visible on her profile."},
@@ -147,18 +147,18 @@ const CORE_LEVELS = [
  {
   id:2, title:"Strong Password Creation", tagline:"Build passwords that are genuinely hard to crack",
   factors:['awareness','convenience'],
-  lesson:`<h4>Strong vs. weak passwords</h4>
+  lesson:`<h4>Strong vs. Weak Passwords</h4>
    <p>A weak password relies on something predictable — a word, a name, a short number sequence. A strong password relies on length and randomness, the two things that make guessing or cracking it take far too long to be worth an attacker's time.</p>
-   <h4>Password length</h4>
+   <h4>Password Length</h4>
    <p>Length matters more than complexity tricks. A 16-character password made of ordinary words is often stronger than an 8-character password stuffed with symbols, because every extra character multiplies the number of possible combinations.</p>
-   <h4>Variety of characters</h4>
+   <h4>Variety of Characters</h4>
    <p>Mixing uppercase, lowercase, numbers, and symbols adds variety, but length does most of the work. Swapping letters for look-alike symbols (“P@ssw0rd”) is a trick guessing tools already know.</p>
    <h4>Passphrases</h4>
    <p>A passphrase strings together several unrelated words — like <i>Purple-Mango7-Jumps</i> — making it both long and memorable. This is often easier to recall than a random jumble of characters while staying just as hard to crack.</p>
-   <h4>Avoiding predictable patterns</h4>
+   <h4>Avoiding Predictable Patterns</h4>
    <ul><li>Avoid keyboard patterns like "qwerty" or "12345"</li><li>Don't just add "1" or "!" to the end of an old password</li></ul>`,
   practice:{
-    activity:{title:"Which is safer?", prompt:"All fictional. Sort each password.", labels:['Safer','Riskier'],
+    activity:{title:"Which Is Safer?", prompt:"All fictional. Sort each password.", labels:['Safer','Riskier'],
       items:[
         {text:"qwerty123", answer:1, why:"Keyboard rows plus 123 are among the first patterns tried."},
         {text:"Purple-Mango7-Jumps-Kite", answer:0, why:"Long, varied, and made of unrelated words."},
@@ -167,7 +167,7 @@ const CORE_LEVELS = [
         {text:"abc12345", answer:1, why:"Short and sequential, so it falls quickly."}
       ]},
     scenarios:[
-      {title:"“Symbols make it strong”", factors:['social','convenience'], who:'🧑‍🤝‍🧑',
+      {title:"“Symbols Make It Strong”", factors:['social','convenience'], who:'🧑‍🤝‍🧑',
        story:"Kyle is making a new Facebook password. His classmate, trying to help, says: “Just use P@ssw0rd123. It has symbols, so it's strong.”",
        opts:[
         {t:"Use it, since symbols make passwords strong", ok:false, fb:"Symbol swaps are a trick guessing tools already know, so it's still one of the most common passwords."},
@@ -194,16 +194,16 @@ const CORE_LEVELS = [
  {
   id:3, title:"Predictable Passwords & Personal Information", tagline:"Make it memorable without making it guessable",
   factors:['convenience','experience','social'],
-  lesson:`<h4>Easy to remember can mean easy to guess</h4>
+  lesson:`<h4>Easy to Remember Can Mean Easy to Guess</h4>
    <p>Many students choose passwords they won't forget: a name, a birthday, a pet, a crush, a favorite team or K-pop group. The problem is that the same details are often on your profile, in your posts, or known by classmates.</p>
-   <h4>What counts as predictable</h4>
+   <h4>What Counts as Predictable</h4>
    <ul><li>Names and nicknames (yours, family, pets)</li><li>Birthdays, anniversaries, section or student numbers</li><li>Favorite things you post about</li><li>Patterns like “name + 123” or adding “!” at the end</li></ul>
-   <h4>Oversharing makes guessing easier</h4>
+   <h4>Oversharing Makes Guessing Easier</h4>
    <p>Details that feel harmless — your school, your daily schedule, your pet's name, your mother's maiden name — are often exactly what's used to guess passwords or answer account-recovery security questions.</p>
-   <h4>Memorable and safer</h4>
+   <h4>Memorable and Safer</h4>
    <p>Pick three or four unrelated words and join them into a picture only you would imagine, like <i>Tsinelas-Rocket-Mango-42</i>. It's easy to remember and has nothing to do with your profile.</p>`,
   practice:{
-    activity:{title:"Predictable or safer?", prompt:"Imagine these belong to a student who posts a lot. Which are predictable?", labels:['Safer','Predictable'],
+    activity:{title:"Predictable or Safer?", prompt:"Imagine these belong to a student who posts a lot. Which are predictable?", labels:['Safer','Predictable'],
       items:[
         {text:"Bea-Oct15 (her name and birthday)", answer:1, why:"Her name and birthday are probably on her profile."},
         {text:"Choco_2020 (her dog, who's in her photos)", answer:1, why:"A pet seen in posts is one of the first guesses."},
@@ -212,14 +212,14 @@ const CORE_LEVELS = [
         {text:"StPaul-Grade11", answer:1, why:"School and grade level are known by many people."}
       ]},
     scenarios:[
-      {title:"Easy but predictable, or memorable and safer?", factors:['convenience','experience'], who:'👩‍🎓',
+      {title:"Easy but Predictable, or Memorable and Safer?", factors:['convenience','experience'], who:'👩‍🎓',
        story:"Andrea keeps forgetting her passwords, so she wants to use her dog's name plus her birth year, “Choco2008”, for everything. Choco is in half of her photos.",
        opts:[
         {t:"Use Choco2008, since only close friends know her dog", ok:false, fb:"Choco appears in her photos and captions, so anyone scrolling her profile could guess it."},
         {t:"Make a passphrase of random words and save it in a password manager", ok:true, fb:"It stays memorable (or safely saved) without using details people can find about her."},
         {t:"Write Choco2008 on a sticky note on her phone case", ok:false, fb:"It's still predictable, and now anyone holding her phone can read it."}
        ]},
-      {title:"Advice from family", factors:['social','convenience'], who:'👨‍👦',
+      {title:"Advice from Family", factors:['social','convenience'], who:'👨‍👦',
        story:"Paolo's tito tells him to use their house number plus his birthday “so you never forget it”. It's what his tito uses too.",
        opts:[
         {t:"Follow the advice exactly", ok:false, fb:"Family advice usually comes from a good place, but a house number and birthday are details many people know."},
@@ -246,16 +246,16 @@ const CORE_LEVELS = [
  {
   id:4, title:"Password Management", tagline:"Keep track of your passwords the safe way",
   factors:['management','convenience','social'],
-  lesson:`<h4>Password managers</h4>
+  lesson:`<h4>Password Managers</h4>
    <p>A trusted password manager encrypts and organizes your passwords, so you only need to remember one master password. This is far safer than memory tricks or written lists, and it makes using a unique password for every account realistic.</p>
-   <h4>Secure storage</h4>
+   <h4>Secure Storage</h4>
    <ul><li>Sticky notes on your monitor or notebook — avoid</li><li>Plain, unprotected notes apps — avoid</li><li>Group chats or shared documents — avoid</li></ul>
-   <h4>Password reuse</h4>
+   <h4>Password Reuse</h4>
    <p>Many SHS students use the same password across Facebook, Gmail, and games because it's convenient. But when one platform is breached, hackers try those leaked passwords on other popular sites — a tactic called <b>credential stuffing</b>. Reusing a password means one leak can compromise every account that shares it.</p>
-   <h4>Sharing passwords</h4>
+   <h4>Sharing Passwords</h4>
    <p>It might feel harmless to give a close friend your password "just this once," but every share is a risk you can't take back. A trustworthy friend today doesn't guarantee your account stays safe tomorrow.</p>`,
   practice:{
-    activity:{title:"Safe storage or risky storage?", prompt:"Where should passwords live?", labels:['Safer','Riskier'],
+    activity:{title:"Safe Storage or Risky Storage?", prompt:"Where should passwords live?", labels:['Safer','Riskier'],
       items:[
         {text:"A trusted password manager app", answer:0, why:"It encrypts your passwords and fills them in for you."},
         {text:"A sticky note on the laptop screen", answer:1, why:"Anyone who walks by can read it."},
@@ -264,14 +264,14 @@ const CORE_LEVELS = [
         {text:"Memorizing one passphrase for your email and saving the rest in a password manager", answer:0, why:"One strong thing to remember, and every other account still gets its own password."}
       ]},
     scenarios:[
-      {title:"One password, five accounts", factors:['management','convenience'], who:'🎮',
+      {title:"One Password, Five Accounts", factors:['management','convenience'], who:'🎮',
        story:"Jomar uses “JomarRox2007” for Facebook, Instagram, TikTok, Gmail, and a game site because it's easier. Then the game site announces a data breach.",
        opts:[
         {t:"Change only the game site password", ok:false, fb:"Attackers try leaked passwords on other sites. Every account using the same password is at risk."},
         {t:"Change the password on every account that used it, starting with Gmail, and give each one its own password", ok:true, fb:"Email first, because it can reset his other accounts. Unique passwords keep one leak from spreading."},
         {t:"Wait and see if anything happens", ok:false, fb:"By the time something happens, someone may already be inside his accounts."}
        ]},
-      {title:"A friend asks for your password", factors:['social','management'], who:'🎂',
+      {title:"A Friend Asks for Your Password", factors:['social','management'], who:'🎂',
        story:"Tricia's best friend asks for her Instagram password “just to post a birthday surprise” from Tricia's account.",
        opts:[
         {t:"Share it, they're best friends", ok:false, fb:"Even with a trusted friend, a shared password is out of her control. It could be saved on their phone or seen by others."},
@@ -300,18 +300,18 @@ const CORE_LEVELS = [
   id:5, title:"Password Maintenance", tagline:"Staying safe is an ongoing habit, not a one-time fix",
   factors:['management','awareness','experience'],
   research:'lowest',
-  lesson:`<h4>Maintenance is intentional, not constant</h4>
+  lesson:`<h4>Maintenance Is Intentional, Not Constant</h4>
    <p>You don't need to change your passwords every few days. Constant changes usually lead to weaker, easier-to-forget passwords. Instead, update a password <b>when there's a reason</b>, and check your account security regularly.</p>
-   <h4>When an update makes sense</h4>
+   <h4>When an Update Makes Sense</h4>
    <ul><li>A login alert or security notification you don't recognize</li><li>A site you use announces a data breach</li><li>You shared the password, or typed it on a device you don't trust</li><li>The password is weak, or you reuse it on other accounts</li></ul>
-   <h4>Checking account security</h4>
+   <h4>Checking Account Security</h4>
    <ul><li>Login alerts from unfamiliar devices or locations</li><li>Posts or messages you didn't send</li><li>Being logged out unexpectedly</li></ul>
-   <h4>If an account may be compromised</h4>
+   <h4>If an Account May Be Compromised</h4>
    <ul><li>Change the password from a device you trust</li><li>Turn on 2FA if it isn't on yet</li><li>Log out of other sessions and remove unfamiliar devices or apps</li></ul>
-   <h4>Ongoing password habits</h4>
+   <h4>Ongoing Password Habits</h4>
    <p>Every few months, review your security settings: login activity, connected devices, recovery email or phone, and reused passwords. Habit Mode's monthly check-up helps turn this into a lasting habit.</p>`,
   practice:{
-    activity:{title:"Update now, or no need yet?", prompt:"Decide what each situation calls for.", labels:['Update now','No need yet'],
+    activity:{title:"Update Now, or No Need Yet?", prompt:"Decide what each situation calls for.", labels:['Update now','No need yet'],
       items:[
         {text:"An alert says someone logged into your Facebook from a device you don't recognize.", answer:0, why:"An unfamiliar login is a clear reason to change the password and check your sessions."},
         {text:"Your password is long and unique, nothing unusual has happened, and it's been two weeks.", answer:1, why:"Changing a strong, unique password without a reason adds little. Keep doing regular security check-ups instead."},
@@ -320,14 +320,14 @@ const CORE_LEVELS = [
         {text:"A random DM says you must change your password today through its link.", answer:1, why:"Not through that message. Real platforms don't ask this way, and it could be phishing. Check your settings in the app itself."}
       ]},
     scenarios:[
-      {title:"Security review", factors:['awareness','management'], who:'🔎',
+      {title:"Security Review", factors:['awareness','management'], who:'🔎',
        story:"During her monthly check-up, Lara opens Instagram's Login activity. She sees her phone, her laptop, and a login from another city two days ago.",
        opts:[
         {t:"Ignore it, it's probably a glitch", ok:false, fb:"An unknown login is exactly what a security review is meant to catch."},
         {t:"Log out that session, change her password, turn on 2FA, and check her recovery email", ok:true, fb:"That's a complete response: remove the intruder, lock the door, and make sure she can recover the account."},
         {t:"Post a story asking who logged into her account", ok:false, fb:"Secure the account first. She can tell trusted people later if needed."}
        ]},
-      {title:"After a forgotten password", factors:['experience','convenience'], who:'😅',
+      {title:"After a Forgotten Password", factors:['experience','convenience'], who:'😅',
        story:"Enzo forgot his TikTok password and reset it with a code sent to his email. Now he wants to set it back to his old password “so he won't forget again”.",
        opts:[
         {t:"Set it back to the old password", ok:false, fb:"If the old password was weak or used elsewhere, the same risk comes back. A reset is a chance to upgrade."},
@@ -366,15 +366,15 @@ const ADV_LEVELS = [
   factors:['awareness','management'],
   lesson:`<h4>Two-Factor Authentication (2FA)</h4>
    <p>2FA adds a second verification step after your password — usually a one-time code sent to your phone or generated by an app. Even if someone steals your password, they still can't get in without that second factor.</p>
-   <h4>Kinds of second steps</h4>
+   <h4>Kinds of Second Steps</h4>
    <ul><li>A code from an authenticator app</li><li>A code sent by SMS</li><li>Approving the login on a device you already use</li></ul>
    <p>Save the backup codes the platform gives you, and never share a verification code with anyone.</p>
-   <h4>Security alerts</h4>
+   <h4>Security Alerts</h4>
    <p>Turn on login alerts so you're told when a new device signs in. An alert you don't recognize is your cue to act (Levels 5 and 8 show how).</p>
-   <h4>Privacy settings &amp; connected apps</h4>
+   <h4>Privacy Settings &amp; Connected Apps</h4>
    <p>Check who can see your profile, posts, and contact info, since public details help attackers guess passwords or answer security questions. Quizzes, games, and "login with Facebook" apps can also keep access to your account, so remove the ones you no longer use.</p>`,
   practice:{
-    activity:{title:"More protection needed?", prompt:"For each fictional account, decide whether it needs extra protection.", labels:['Add protection','Already OK'],
+    activity:{title:"More Protection Needed?", prompt:"For each fictional account, decide whether it needs extra protection.", labels:['Add protection','Already OK'],
       items:[
         {text:"Your main Facebook, with years of photos and chats, protected by a password only", answer:0, why:"Your most personal account deserves 2FA and login alerts."},
         {text:"Your Gmail, which can reset all your other accounts", answer:0, why:"Protect your email first, because it's the key to your other accounts."},
@@ -383,7 +383,7 @@ const ADV_LEVELS = [
         {text:"An old account you don't use anymore still has your photos", answer:0, why:"Old accounts are easy targets. Secure it with 2FA or delete it."}
       ]},
     scenarios:[
-      {title:"Is 2FA worth the extra step?", factors:['experience','awareness'], who:'🤔',
+      {title:"Is 2FA Worth the Extra Step?", factors:['experience','awareness'], who:'🤔',
        story:"Last month, Miguel's friend lost her account even though her password was long. Miguel is deciding whether 2FA is worth the extra step when he logs in.",
        opts:[
         {t:"Skip it; his password is strong enough", ok:false, fb:"Strong passwords can still be stolen through phishing or leaks. With 2FA, a password alone isn't enough."},
@@ -413,18 +413,18 @@ const ADV_LEVELS = [
  {
   id:7, advanced:true, title:"Phishing & Social Engineering", tagline:"Learn to spot the scams that try to trick you out of your password",
   factors:['awareness','social','management'],
-  lesson:`<h4>Fake login pages &amp; suspicious emails</h4>
+  lesson:`<h4>Fake Login Pages &amp; Suspicious Emails</h4>
    <p>Phishing is when someone impersonates a trusted source — a platform, a friend, or an organization — to trick you into typing your password into a fake page, or clicking a link in a fake email that looks official.</p>
-   <h4>Scam messages &amp; fake tech support</h4>
+   <h4>Scam Messages &amp; Fake Tech Support</h4>
    <ul><li>"Your account will be deleted — verify now!" messages designed to create panic</li><li>Fake giveaways or prizes that ask you to "log in to claim"</li><li>Cloned login pages that look identical to Facebook or Instagram but have a slightly different link</li><li>"Tech support" messages claiming your device is infected and asking for remote access or your password</li></ul>
-   <h4>Never share passwords or verification codes</h4>
+   <h4>Never Share Passwords or Verification Codes</h4>
    <p>No real platform, teacher, or friend needs your password or the code sent to your phone. Anyone asking for them, even from a familiar account, is a red flag.</p>
-   <h4>QR phishing ("quishing")</h4>
+   <h4>QR Phishing ("Quishing")</h4>
    <p>Scammers now hide malicious links inside QR codes — on posters, stickers, or messages — since a QR code doesn't show its destination until you scan it. Treat an unexpected QR code the same way you'd treat a suspicious link.</p>
-   <h4>How to verify before you click or scan</h4>
+   <h4>How to Verify Before You Click or Scan</h4>
    <ul><li>Check the actual URL, not just how the page looks</li><li>Be suspicious of urgency and pressure ("act now or lose your account")</li><li>Confirm with the person or company through a separate, trusted channel</li></ul>`,
   practice:{
-    activity:{title:"Real or suspicious?", prompt:"All examples are fictional.", labels:['Looks safe','Suspicious'],
+    activity:{title:"Real or Suspicious?", prompt:"All examples are fictional.", labels:['Looks safe','Suspicious'],
       items:[
         {text:"A DM from “Instagram Support”: “Verify now or your account will be deleted in 1 hour.”", answer:1, why:"Urgency plus a login request is a classic phishing pattern."},
         {text:"A login alert you found yourself in the app's Security settings", answer:0, why:"You opened the official app yourself, so it's a safe place to check."},
@@ -433,7 +433,7 @@ const ADV_LEVELS = [
         {text:"Someone asks for the 6-digit code you just received “so they can fix your account”", answer:1, why:"Verification codes are only for you. Sharing one lets someone log in as you."}
       ]},
     scenarios:[
-      {title:"Free load in the group chat", factors:['social','awareness'], who:'💬',
+      {title:"Free Load in the Group Chat", factors:['social','awareness'], who:'💬',
        story:"In the class group chat, a classmate posts: “Free load! Log in with your Facebook here to claim.” She says it worked for her.",
        opts:[
         {t:"Log in, since a classmate says it worked", ok:false, fb:"Her account may be compromised, or she may have been tricked too. Login links for free prizes are a common trick."},
@@ -456,18 +456,18 @@ const ADV_LEVELS = [
  {
   id:8, advanced:true, title:"Account Recovery & Data Breaches", tagline:"Know what to do before — and after — an account gets compromised",
   factors:['experience','awareness','management'],
-  lesson:`<h4>Recovering an account &amp; what to do if hacked</h4>
+  lesson:`<h4>Recovering an Account &amp; What to Do If Hacked</h4>
    <p>Most platforms let you add a recovery email or phone number. Set these up now, while you still have full access, so you're not locked out later if you ever need to recover an account.</p>
-   <h4>Recognizing breach notifications</h4>
+   <h4>Recognizing Breach Notifications</h4>
    <p>Sometimes a platform or a breach-monitoring service will email you that your info appeared in a data breach. These are worth taking seriously — but always verify the notification came from a legitimate source before clicking anything inside it.</p>
-   <h4>Why unique passwords matter in a breach</h4>
+   <h4>Why Unique Passwords Matter in a Breach</h4>
    <p>When one site is breached, only that password leaks. If you used it nowhere else, the damage stays in one place. If you reused it, every account that shares it needs a new password.</p>
-   <h4>Signs your account may be breached</h4>
+   <h4>Signs Your Account May Be Breached</h4>
    <ul><li>You're logged out of an account you didn't log out of</li><li>Posts, messages, or friend requests you didn't make</li><li>A login alert from a device or location you don't recognize</li></ul>
-   <h4>Changing passwords after a breach</h4>
+   <h4>Changing Passwords After a Breach</h4>
    <ul><li>Change the password immediately, from a device you trust</li><li>Enable two-factor authentication if it wasn't already on</li><li>Check "active sessions" or "connected apps" and remove anything unfamiliar</li><li>Let friends know if messages were sent from your account without your knowledge</li></ul>`,
   practice:{
-    activity:{title:"Helpful or not?", prompt:"You got an alert about a login you don't recognize. Which steps help?", labels:['Helpful','Not helpful'],
+    activity:{title:"Helpful or Not?", prompt:"You got an alert about a login you don't recognize. Which steps help?", labels:['Helpful','Not helpful'],
       items:[
         {text:"Change the password from a device you trust", answer:0, why:"This locks out whoever has the old password."},
         {text:"Reply to the alert email with your password to “confirm it's you”", answer:1, why:"Real alerts never ask for your password. Replying could hand it to an attacker."},
@@ -476,14 +476,14 @@ const ADV_LEVELS = [
         {text:"Turn on 2FA and check your recovery email and phone", answer:0, why:"This makes it much harder for them to get back in, and easier for you to recover the account."}
       ]},
     scenarios:[
-      {title:"A login from somewhere else", factors:['experience','awareness'], who:'📩',
+      {title:"A Login from Somewhere Else", factors:['experience','awareness'], who:'📩',
        story:"Bea gets an email: “New login to your Instagram from Cebu.” She's in Manila and feels nervous.",
        opts:[
         {t:"Tap the button in the email to secure the account", ok:false, fb:"The alert may be real, but a link in an email could also be fake. Open the Instagram app herself and check there."},
         {t:"Open the Instagram app herself, check Login activity, remove the unknown session, change her password, and turn on 2FA", ok:true, fb:"She checks through the real app and then fully secures the account. Staying calm and acting quickly is the best response."},
         {t:"Ignore it, since she's still logged in", ok:false, fb:"Still being logged in doesn't mean nobody else is. Check the login activity."}
        ]},
-      {title:"A breach at a game site", factors:['management','awareness'], who:'📰',
+      {title:"A Breach at a Game Site", factors:['management','awareness'], who:'📰',
        story:"A news post says a popular game site was breached. Kyle used the same password there and on his Facebook.",
        opts:[
         {t:"Change both passwords and make each one unique", ok:true, fb:"Leaked passwords get tried on other sites, so every account that reused it needs a new, unique password."},
@@ -506,16 +506,16 @@ const ADV_LEVELS = [
   id:9, advanced:true, title:"Safe Login & Device Security", tagline:"Keep doing what you already do well on shared and public devices",
   factors:['awareness','management'],
   research:'highest',
-  lesson:`<h4>A habit you already practice</h4>
+  lesson:`<h4>A Habit You Already Practice</h4>
    <p>Being careful on shared and public devices was the password habit students in our study practiced most consistently. This level helps you keep it strong, even when you're in a hurry.</p>
-   <h4>On shared or public computers</h4>
+   <h4>On Shared or Public Computers</h4>
    <ul><li>Log out completely when you're done. Closing the tab isn't enough</li><li>Choose “Not now” or “Never” when the browser offers to save your password</li><li>Use a private (incognito) window and don't tick “Keep me logged in”</li><li>Notice who's around you when you type your password</li></ul>
-   <h4>Lock screens matter</h4>
+   <h4>Lock Screens Matter</h4>
    <p>A strong social media password means little if your phone or laptop has no lock screen — anyone who picks it up is already logged in everywhere.</p>
-   <h4>Safe device habits</h4>
+   <h4>Safe Device Habits</h4>
    <ul><li>Keep your apps and operating system updated — updates often patch security holes</li><li>Avoid logging into sensitive accounts over public Wi-Fi without a VPN</li><li>Know which device you're on: a school, library, or café computer is not your own</li></ul>`,
   practice:{
-    activity:{title:"Safe or risky on a shared computer?", prompt:"You're using a computer that isn't yours.", labels:['Safe','Risky'],
+    activity:{title:"Safe or Risky on a Shared Computer?", prompt:"You're using a computer that isn't yours.", labels:['Safe','Risky'],
       items:[
         {text:"Clicking “Log out” before leaving the computer lab", answer:0, why:"Logging out keeps the next user out of your account. Keep it up!"},
         {text:"Letting the browser save your password on the library PC", answer:1, why:"The next person could log in as you without knowing your password."},
@@ -524,14 +524,14 @@ const ADV_LEVELS = [
         {text:"Closing the tab and leaving in a hurry", answer:1, why:"Closing the tab can leave you logged in."}
       ]},
     scenarios:[
-      {title:"Printing at the internet café", factors:['awareness','management'], who:'🖨️',
+      {title:"Printing at the Internet Café", factors:['awareness','management'], who:'🖨️',
        story:"Carla logs into Messenger on an internet café computer to download her group's project file. She's finished printing.",
        opts:[
         {t:"Log out, decline to save the password, and close the browser", ok:true, fb:"That's exactly the habit most students in our study already practice. Logging out keeps the next user out of her account."},
         {t:"Just close the tab, since she's in a hurry", ok:false, fb:"Closing the tab can leave her logged in, so the next person could open Messenger as her."},
         {t:"Leave it open, since she'll come back later", ok:false, fb:"Anyone who sits down could read her chats or send messages as her."}
        ]},
-      {title:"Lending your phone", factors:['social','awareness'], who:'📱',
+      {title:"Lending Your Phone", factors:['social','awareness'], who:'📱',
        story:"Carla's younger cousin wants to borrow her phone to play games. Her Instagram and Messenger are logged in.",
        opts:[
         {t:"Hand it over, since it's family", ok:false, fb:"Her cousin probably means no harm, but could open her DMs or post something by accident."},
@@ -552,14 +552,14 @@ const ADV_LEVELS = [
  {
   id:10, advanced:true, title:"Cybersecurity Challenge", tagline:"The capstone — put everything you've learned to the test",
   factors:['experience','awareness','convenience','management','social'],
-  lesson:`<h4>You've reached the final level</h4>
+  lesson:`<h4>You've Reached the Final Level</h4>
    <p>This capstone level doesn't teach new theory — it puts every habit from Levels 1 to 9 to the test through mixed scenarios and a final assessment: password creation, predictable information, reuse, management, maintenance, 2FA, phishing, compromised accounts, and shared devices.</p>
-   <h4>What's covered</h4>
+   <h4>What's Covered</h4>
    <ul><li>Scenario-based situations combining multiple habits at once</li><li>A password safety mini-checklist as a final review</li><li>A final assessment quiz mixing questions from every level</li></ul>
-   <h4>After this level</h4>
+   <h4>After This Level</h4>
    <p>Completing all 10 levels unlocks <b>Habit Mode</b> — daily missions, weekly challenges, streaks, rotating quizzes, monthly password check-ups, and new badges to keep your habits sharp long after the lessons end. Finishing shows what you've learned in PassQuest; real safety comes from keeping these habits going.</p>`,
   practice:{
-    activity:{title:"Quick sort", prompt:"Mixed habits from every level.", labels:['Safer','Riskier'],
+    activity:{title:"Quick Sort", prompt:"Mixed habits from every level.", labels:['Safer','Riskier'],
       items:[
         {text:"Using a crush's name plus 143 as a password", answer:1, why:"Personal and predictable (Level 3)."},
         {text:"One unique password per account, saved in a password manager", answer:0, why:"Unique and safely stored (Level 4)."},
@@ -568,28 +568,28 @@ const ADV_LEVELS = [
         {text:"Updating your password after an unfamiliar login alert", answer:0, why:"Intentional maintenance (Levels 5 and 8)."}
       ]},
     scenarios:[
-      {title:"One easy password for everything", factors:['convenience','management'], who:'🏀',
+      {title:"One Easy Password for Everything", factors:['convenience','management'], who:'🏀',
        story:"Sam wants one easy password, “SamBasketball10”, for every account because he plays basketball and wears number 10.",
        opts:[
         {t:"Use it everywhere, since it's easy", ok:false, fb:"It's predictable (his sport and jersey number) and reused, so one leak opens everything."},
         {t:"Make unique passphrases and keep them in a password manager", ok:true, fb:"Unique, unpredictable, and still easy to manage. That's Levels 2 to 4 working together."},
         {t:"Use it, but add a different number for each app", ok:false, fb:"A small change to the same base is a pattern guessers try."}
        ]},
-      {title:"A “teacher” asks for a code", factors:['social','awareness'], who:'🧑‍🏫',
+      {title:"A “Teacher” Asks for a Code", factors:['social','awareness'], who:'🧑‍🏫',
        story:"An account with a teacher's name messages Andrea: “Send me the code I just sent to your phone so I can add you to the class group.”",
        opts:[
         {t:"Send it, since it's a teacher", ok:false, fb:"Anyone can use a teacher's name, and nobody needs your verification code to add you to a group."},
         {t:"Don't send it; check with the teacher in person or through the school's official channel", ok:true, fb:"Verifying through a trusted channel protects her account, whoever sent the message."},
         {t:"Send half of the code", ok:false, fb:"Any part of a code is still yours alone."}
        ]},
-      {title:"A change you didn't make", factors:['experience','management'], who:'🚨',
+      {title:"A Change You Didn't Make", factors:['experience','management'], who:'🚨',
        story:"Paolo gets an alert: “Your password was changed.” He didn't change it.",
        opts:[
         {t:"Use the platform's account recovery right away, then set a new unique password and turn on 2FA", ok:true, fb:"Acting fast with recovery options (Level 8) gets him back in before more damage is done."},
         {t:"Wait until tomorrow to see what happens", ok:false, fb:"The longer he waits, the more time someone has to change his recovery info."},
         {t:"Create a new account and forget the old one", ok:false, fb:"His old account still has his photos and chats, and could be used to scam his friends."}
        ]},
-      {title:"Checking Facebook at the library", factors:['awareness'], who:'📚',
+      {title:"Checking Facebook at the Library", factors:['awareness'], who:'📚',
        story:"Mia uses a library computer to check a Facebook message from her group mates.",
        opts:[
         {t:"Log out when she's done and don't save the password", ok:true, fb:"The same careful habit from Level 9. Keep it up!"},
@@ -683,21 +683,21 @@ const MONTHLY_CHECKLIST_POOL = [
 
 const ROTATING_QUIZ_POOL = [
   {tag:'Phishing', q:"A pop-up says \"Your Facebook will be deleted — verify your password now!\" What should you do?", opts:["Type your password immediately","Ignore it — this is a classic phishing scare tactic","Forward it to friends","Reply asking for more details"], answer:1, explain:"Urgency + a request for your password is a textbook phishing pattern."},
-  {tag:'Strong passwords', q:"Which password would take a hacker the LONGEST to guess?", opts:["stpaul2025","Tr0ub4dor&3-Kite-Whistle","ilovebts","qwerty12345"], answer:1, explain:"Length plus unpredictability beats short, guessable patterns."},
-  {tag:'Shared devices', q:"You're about to log into your school portal on a friend's laptop. What's the safest move afterward?", opts:["Leave it logged in","Log out and clear the saved session","Just close the tab","Nothing needed"], answer:1, explain:"Logging out on a device you don't own prevents leftover access."},
+  {tag:'Strong Passwords', q:"Which password would take a hacker the LONGEST to guess?", opts:["stpaul2025","Tr0ub4dor&3-Kite-Whistle","ilovebts","qwerty12345"], answer:1, explain:"Length plus unpredictability beats short, guessable patterns."},
+  {tag:'Shared Devices', q:"You're about to log into your school portal on a friend's laptop. What's the safest move afterward?", opts:["Leave it logged in","Log out and clear the saved session","Just close the tab","Nothing needed"], answer:1, explain:"Logging out on a device you don't own prevents leftover access."},
   {tag:'Phishing', q:"An app asks to log in \"using your Facebook password\" outside of Facebook itself. This is:", opts:["Normal and safe","A major red flag — never enter your real password on another site","Required for all apps","A way to save time only"], answer:1, explain:"Legitimate apps use official login flows, never a raw password field mimicking another platform."},
-  {tag:'Password management', q:"What's the safest way to remember many unique passwords?", opts:["Write them all in one notes app","Use a trusted password manager","Use the same base word for all","Memorize only the easy ones"], answer:1, explain:"A password manager securely stores and autofills unique passwords for you."},
+  {tag:'Password Management', q:"What's the safest way to remember many unique passwords?", opts:["Write them all in one notes app","Use a trusted password manager","Use the same base word for all","Memorize only the easy ones"], answer:1, explain:"A password manager securely stores and autofills unique passwords for you."},
   {tag:'2FA', q:"You get an SMS OTP you didn't request. This most likely means:", opts:["Nothing, it's random","Someone may be trying to log into your account","Your phone is broken","You should share the OTP to confirm"], answer:1, explain:"An unrequested OTP usually means someone has your password and is trying to get past 2FA."},
-  {tag:'Password reuse', q:"Which habit best protects you if one of your accounts is ever breached?", opts:["Using the same password everywhere","Using a unique password for every account","Sharing your password with a friend as backup","Never changing passwords"], answer:1, explain:"Unique passwords contain the damage to a single account instead of spreading it."},
-  {tag:'Predictable passwords', q:"Which of these would be hardest for your classmates to guess?", opts:["Your crush's name + 143","Your jersey number and school","Lantern-Mango-Tsinelas-88","Your pet's name + birthday"], answer:2, explain:"Unrelated words aren't connected to anything classmates know about you."},
-  {tag:'Password maintenance', q:"Nothing unusual has happened, and your Instagram password is long and unique. What's the best maintenance step this month?", opts:["Change it anyway, every week","Review login activity and recovery info, and keep the strong password","Make it shorter","Give it to a friend for safekeeping"], answer:1, explain:"Intentional maintenance means checking your security settings and updating passwords when there's a reason."},
-  {tag:'Password maintenance', q:"A real alert says your password was used on a device you don't own. What now?", opts:["Nothing","Change the password, sign out other sessions, and turn on 2FA","Post about it first","Wait a week"], answer:1, explain:"An unfamiliar login is a clear reason to update your password and secure the account."},
-  {tag:'Shared devices', q:"You finish checking Facebook on a library computer. Which step matters most?", opts:["Closing the tab","Logging out completely","Turning off the monitor","Clearing your search history only"], answer:1, explain:"Logging out ends your session so the next user can't open your account. Keep up that habit!"},
-  {tag:'Social influence', q:"A friend says everyone in your section uses their birthday as a password, so it must be fine. What's the best response?", opts:["Do the same, since everyone does it","Explain that birthdays are easy to guess and suggest a passphrase","Ask for their passwords to compare","Stop using passwords"], answer:1, explain:"What's common isn't always safe. Sharing a safer tip can help your friends too."},
+  {tag:'Password Reuse', q:"Which habit best protects you if one of your accounts is ever breached?", opts:["Using the same password everywhere","Using a unique password for every account","Sharing your password with a friend as backup","Never changing passwords"], answer:1, explain:"Unique passwords contain the damage to a single account instead of spreading it."},
+  {tag:'Predictable Passwords', q:"Which of these would be hardest for your classmates to guess?", opts:["Your crush's name + 143","Your jersey number and school","Lantern-Mango-Tsinelas-88","Your pet's name + birthday"], answer:2, explain:"Unrelated words aren't connected to anything classmates know about you."},
+  {tag:'Password Maintenance', q:"Nothing unusual has happened, and your Instagram password is long and unique. What's the best maintenance step this month?", opts:["Change it anyway, every week","Review login activity and recovery info, and keep the strong password","Make it shorter","Give it to a friend for safekeeping"], answer:1, explain:"Intentional maintenance means checking your security settings and updating passwords when there's a reason."},
+  {tag:'Password Maintenance', q:"A real alert says your password was used on a device you don't own. What now?", opts:["Nothing","Change the password, sign out other sessions, and turn on 2FA","Post about it first","Wait a week"], answer:1, explain:"An unfamiliar login is a clear reason to update your password and secure the account."},
+  {tag:'Shared Devices', q:"You finish checking Facebook on a library computer. Which step matters most?", opts:["Closing the tab","Logging out completely","Turning off the monitor","Clearing your search history only"], answer:1, explain:"Logging out ends your session so the next user can't open your account. Keep up that habit!"},
+  {tag:'Social Influence', q:"A friend says everyone in your section uses their birthday as a password, so it must be fine. What's the best response?", opts:["Do the same, since everyone does it","Explain that birthdays are easy to guess and suggest a passphrase","Ask for their passwords to compare","Stop using passwords"], answer:1, explain:"What's common isn't always safe. Sharing a safer tip can help your friends too."},
   {tag:'2FA', q:"Someone messages you: “I sent a code to your phone by mistake, can you send it to me?” What should you do?", opts:["Send it, it was a mistake","Don't send it; it's likely an attempt to get into your account","Send half of it","Post it in your story"], answer:1, explain:"Login codes are only for you. Sharing one can let someone else into your account."},
-  {tag:'Password reuse', q:"Why does using one password for every app make a leak worse?", opts:["It doesn't matter","One leaked password can be tried on all your other accounts","Apps share passwords automatically","It makes the password longer"], answer:1, explain:"Attackers try leaked passwords on other sites, so reuse spreads the damage."},
-  {tag:'Forgotten passwords', q:"You forgot your TikTok password and just reset it. What's the best new password?", opts:["Your old password again","TikTok123","A new passphrase saved in a password manager","Your name + birthday"], answer:2, explain:"A reset is a chance to upgrade to a strong password you won't need to reuse."},
-  {tag:'Account protection', q:"A quiz app you used once still has access to your Facebook. What's the safer move?", opts:["Leave it, it's harmless","Remove its access in your account settings","Give it your password","Share the quiz"], answer:1, explain:"Removing apps you don't use limits who can reach your account."}
+  {tag:'Password Reuse', q:"Why does using one password for every app make a leak worse?", opts:["It doesn't matter","One leaked password can be tried on all your other accounts","Apps share passwords automatically","It makes the password longer"], answer:1, explain:"Attackers try leaked passwords on other sites, so reuse spreads the damage."},
+  {tag:'Forgotten Passwords', q:"You forgot your TikTok password and just reset it. What's the best new password?", opts:["Your old password again","TikTok123","A new passphrase saved in a password manager","Your name + birthday"], answer:2, explain:"A reset is a chance to upgrade to a strong password you won't need to reuse."},
+  {tag:'Account Protection', q:"A quiz app you used once still has access to your Facebook. What's the safer move?", opts:["Leave it, it's harmless","Remove its access in your account settings","Give it your password","Share the quiz"], answer:1, explain:"Removing apps you don't use limits who can reach your account."}
 ];
 
 /* =========================================================
@@ -1250,7 +1250,7 @@ return `
   </div>
   <div class="hero-panel float-panel">
     <div class="hero-mascot mascot-float">${mascotSVG('wink',110)}</div>
-    <div class="panel-row"><span class="panel-title">🔎 Live password scan</span><span class="xp-tag">+XP</span></div>
+    <div class="panel-row"><span class="panel-title">🔎 Live Password Scan</span><span class="xp-tag">+XP</span></div>
     <div class="scanner-input"><span class="scanline"></span><span class="type-cursor">Sp@rkL3-Qu3st!92</span></div>
     <div class="strength-label"><span>Strength</span><span style="color:var(--green)">Very Strong</span></div>
     <div class="strength-bar-track"><div class="strength-bar-fill"></div></div>
@@ -1267,7 +1267,7 @@ return `
 <section class="section" id="how"><div class="container">
   <div class="section-head reveal">
     <div class="eyebrow">How It Works</div>
-    <h2>Learn by doing, not by reading</h2>
+    <h2>Learn by Doing, Not by Reading</h2>
     <p>Every level follows the same loop: learn a short lesson, practice with real-life scenarios, check your habits, and take a quiz, with feedback and XP at every step.</p>
   </div>
   <div class="grid-3">
@@ -1279,22 +1279,13 @@ return `
 
 <section class="section" style="padding-top:0"><div class="container">
   <div class="section-head reveal">
-    <div class="eyebrow">🎮 Password Games</div>
-    <h2>Practice with three mini-games</h2>
-    <p>Optional games that make password safety fun, built from the same research findings as the lessons.</p>
-  </div>
-  <div class="grid-3">${Object.values(GAMES).map((gm,i)=>`<div class="feature-card reveal tilt-card" style="animation-delay:${i*.08}s"><div class="feature-icon" style="background:${['var(--grad-1)','var(--grad-2)','var(--grad-gold)'][i]}">${gm.icon}</div><h3>${gm.title}</h3><p>${gm.blurb}</p></div>`).join('')}</div>
-</div></section>
-
-<section class="section" style="padding-top:0"><div class="container">
-  <div class="section-head reveal">
     <div class="eyebrow">Your Journey</div>
-    <h2>Five levels to Password Safety Champion</h2>
+    <h2>Five Levels to Password Safety Champion</h2>
   </div>
   <div class="path-track">${pathItems(CORE_LEVELS)}</div>
   <div class="section-head reveal" style="margin-top:56px">
     <div class="eyebrow">Advanced Track</div>
-    <h2>Five more levels to Cyber Sentinel</h2>
+    <h2>Five More Levels to Cyber Sentinel</h2>
   </div>
   <div class="path-track">${pathItems(ADV_LEVELS)}</div>
 </div></section>
@@ -1302,7 +1293,7 @@ return `
 <section class="section" style="padding-top:0"><div class="container">
   <div class="section-head reveal">
     <div class="eyebrow">Beyond the 10 Levels</div>
-    <h2>Your quest doesn't end at the certificate</h2>
+    <h2>Your Quest Doesn't End at the Certificate</h2>
     <p>Keep coming back for daily missions, weekly challenges, a rotating tip of the day, and a monthly password check-up.</p>
   </div>
   <div class="grid-3">
@@ -1325,14 +1316,14 @@ return `
 </div></section>
 
 <section class="section" style="padding-top:0"><div class="container" style="text-align:center">
-  <h2 style="font-size:28px;margin-bottom:14px">Ready to start your quest?</h2>
+  <h2 style="font-size:28px;margin-bottom:14px">Ready to Start Your Quest?</h2>
   <p style="color:var(--text-dim);margin-bottom:26px">Join your fellow Paulinian Senior High students building safer password habits.</p>
   <button class="btn btn-primary" data-go="register">Create my account →</button>
 </div></section>
 
 <div class="footer"><div class="container footer-inner">
   <div class="brand" style="font-size:15px">${ICONS.logo}PassQuest</div>
-  <p>© 2026 PassQuest · Researched &amp; created by Dizon and Camantigue · St. Paul University Manila SHS</p>
+  <p>© 2026 PassQuest · Researched &amp; created by Maryan Dizon and Kirk Camantigue · St. Paul University Manila SHS</p>
 </div></div>
 `;
 }
@@ -1342,7 +1333,7 @@ function researchBoxMarkup(){
     <div class="feature-icon" style="background:var(--grad-1)">🔬</div>
     <div>
       <h3 style="font-size:17px;margin-bottom:8px">Grounded in Research</h3>
-      <p>PassQuest is based on the study <i>"Analyzing SHS Students' Social Media Password Safety Habits at St. Paul University Manila Toward a Gamified Website Checklist,"</i> conducted by researchers Dizon and Camantigue. Instead of static reading material, the findings are translated into an interactive, game-based experience where students learn, practice, and keep reinforcing safer habits — not just read about them.</p>
+      <p>PassQuest is based on the study <i>"Analyzing Senior High School Students' Social Media Password Safety Habits at St. Paul University Manila Toward a Gamified Website Checklist,"</i> conducted by researchers Maryan Dizon and Kirk Camantigue. Instead of static reading material, the findings are translated into an interactive, game-based experience where students learn, practice, and keep reinforcing safer habits — not just read about them.</p>
     </div>
   </div>`;
 }
@@ -1350,18 +1341,18 @@ function researchBoxMarkup(){
 function creatorsMarkup(){
   return `<div class="section-head reveal">
     <div class="eyebrow">👩‍💻 Meet the Creators</div>
-    <h2>Researched and built by two Paulinian STEM students</h2>
+    <h2>Researched and Built by Two Paulinian STEM Students</h2>
     <p>The study behind PassQuest — and PassQuest itself, from its lessons to its gamified checklist — was researched, designed, and created by:</p>
   </div>
   <div class="grid-2" style="max-width:640px;margin:0 auto">
     <div class="feature-card reveal" style="text-align:center">
       <div class="profile-avatar" style="margin:0 auto 14px">D</div>
-      <h3>Dizon</h3>
+      <h3>Maryan Dizon</h3>
       <p>Researcher &amp; Creator of PassQuest<br>Grade 12 STEM Student, St. Paul University Manila</p>
     </div>
     <div class="feature-card reveal" style="text-align:center">
       <div class="profile-avatar" style="margin:0 auto 14px">C</div>
-      <h3>Camantigue</h3>
+      <h3>Kirk Camantigue</h3>
       <p>Researcher &amp; Creator of PassQuest<br>Grade 12 STEM Student, St. Paul University Manila</p>
     </div>
   </div>`;
@@ -1381,22 +1372,21 @@ function researchFindingsMarkup(){
   return `
   <div class="section-head reveal">
     <div class="eyebrow">From Findings to Features</div>
-    <h2>How our research shaped PassQuest</h2>
+    <h2>How Our Research Shaped PassQuest</h2>
     <p>PassQuest is a gamified educational website checklist developed from the findings of a mixed-method study on the social media password safety habits of Senior High School students at St. Paul University Manila.</p>
   </div>
   <div class="flow-strip reveal">${flow.map(([i,t,s])=>`<div class="flow-step"><span class="flow-ico">${i}</span><b>${t}</b><span>${s}</span></div>`).join('<span class="flow-arrow" aria-hidden="true">→</span>')}</div>
-  <h3 class="research-sub reveal">SOP 1: what shapes students' password habits → our lessons and scenarios</h3>
+  <h3 class="research-sub reveal">SOP 1: What Shapes Students' Password Habits → Our Lessons and Scenarios</h3>
   <div class="sop-grid">${Object.entries(FACTORS).map(([k,f])=>`<div class="sop-card reveal"><div class="sop-ico">${f.icon}</div><h4>${f.label}</h4><p>${uses[k]}</p><span class="sop-levels">Levels ${levelsFor(k)}</span></div>`).join('')}</div>
-  <h3 class="research-sub reveal">SOP 2: how consistently students practice safe habits → what we emphasize</h3>
+  <h3 class="research-sub reveal">SOP 2: How Consistently Students Practice Safe Habits → What We Emphasize</h3>
   <div class="sop2-grid">
-    <div class="sop2-card reveal"><span class="sop2-label">Grand mean</span><b>${SOP2.grandMean.value}</b><span class="sop2-verbal">“${SOP2.grandMean.verbal}”</span><p>Students often practice safe password habits, so PassQuest builds on what they already do and focuses on the gaps.</p></div>
+    <div class="sop2-card reveal"><span class="sop2-label">Grand Mean</span><b>${SOP2.grandMean.value}</b><span class="sop2-verbal">“${SOP2.grandMean.verbal}”</span><p>Students often practice safe password habits, so PassQuest builds on what they already do and focuses on the gaps.</p></div>
     <div class="sop2-card high reveal"><span class="sop2-label">Highest</span><b>${SOP2.highest.value}</b><span class="sop2-verbal">“${SOP2.highest.verbal}”</span><p>${SOP2.highest.habit}. Level ${SOP2.highest.level} reinforces this strength with shared-device scenarios and positive feedback.</p></div>
     <div class="sop2-card low reveal"><span class="sop2-label">Lowest</span><b>${SOP2.lowest.value}</b><span class="sop2-verbal">“${SOP2.lowest.verbal}”</span><p>${SOP2.lowest.habit}. Level ${SOP2.lowest.level}, Habit Mode's monthly check-up, and maintenance missions make this a major focus.</p></div>
   </div>
   <div class="why-card reveal">
-    <h4>Why a gamified website?</h4>
+    <h4>Why a Gamified Website?</h4>
     <p>Students already spend much of their time online and on their phones. A website works on any phone or school computer with nothing to install, and game elements like XP, levels, badges, and streaks turn password safety into something students practice and come back to, instead of a handout they read once.</p>
-    <p>Three optional <b>Password Games</b> (Reflex Sort, Escape the Breach, and Password Challenge) add playful practice built from the same findings.</p>
     <p class="why-note">PassQuest is designed to promote awareness, provide chances to practice, and reinforce safer password habits. It can't guarantee behavior change or prevent every attack, and progress in PassQuest is learning progress, not a security score.</p>
   </div>`;
 }
@@ -1414,7 +1404,7 @@ function viewAuth(mode){
     <div class="auth-card page-anim">
       <div class="auth-brand">${ICONS.logo}</div>
       ${mode==='login' ? `
-        <h2>Welcome back</h2><p class="sub">Log in to continue your quest.</p>
+        <h2>Welcome Back</h2><p class="sub">Log in to continue your quest.</p>
         <div id="formMsg" class="form-msg"></div>
         <form id="loginForm">
           <div class="field"><label>Username</label><input type="text" id="li_username" placeholder="e.g. juan.delacruz" required></div>
@@ -1425,15 +1415,15 @@ function viewAuth(mode){
         </form>
         <div class="auth-switch">New to PassQuest? <a href="#" data-go="register">Create an account</a></div>
       ` : `
-        <h2>Create your account</h2><p class="sub">Begin your password safety journey.</p>
+        <h2>Create Your Account</h2><p class="sub">Begin your password safety journey.</p>
         <div id="formMsg" class="form-msg"></div>
         <form id="regForm">
-          <div class="field"><label>Full name</label><input type="text" id="r_name" placeholder="Juan Dela Cruz" required></div>
+          <div class="field"><label>Full Name</label><input type="text" id="r_name" placeholder="Juan Dela Cruz" required></div>
           <div class="field-row">
             <div class="field"><label>Strand</label><select id="r_strand">${strands.map(s=>`<option>${s}</option>`).join('')}</select></div>
             <div class="field"><label>Grade &amp; Section</label><input type="text" id="r_section" placeholder="Grade 11 - St. Paul" required></div>
           </div>
-          <div class="field"><label>School email</label><input type="email" id="r_email" placeholder="you@spum.edu.ph" required></div>
+          <div class="field"><label>School Email</label><input type="email" id="r_email" placeholder="you@spum.edu.ph" required></div>
           <div class="field"><label>Username</label><input type="text" id="r_username" placeholder="Choose a username" required></div>
           <div class="field"><label>Password</label>
             <div class="pw-toggle-wrap"><input type="password" id="r_password" placeholder="Create a strong password" required><span class="pw-eye" data-eyefor="r_password">👁️</span></div>
@@ -1536,7 +1526,7 @@ function todaysQuestMarkup(){
     return `<div class="card adv-teaser reveal" style="margin-top:20px">
       <div class="adv-teaser-ico">🔁</div>
       <div>
-        <h3 style="font-size:16px;margin-bottom:6px">Habit Mode — locked</h3>
+        <h3 style="font-size:16px;margin-bottom:6px">Habit Mode — Locked</h3>
         <p style="color:var(--text-dim);font-size:13.5px">Complete all 10 levels (${remaining} level${remaining===1?'':'s'} to go) to unlock Habit Mode: daily missions, weekly challenges, rotating quizzes, monthly password health checks, and more badges.</p>
       </div>
     </div>`;
@@ -1557,24 +1547,24 @@ function todaysQuestMarkup(){
         <b>${p.streak} day${p.streak===1?'':'s'}</b>
       </div>
       <div class="quest-mini">
-        <span class="qm-label">📆 Daily missions</span>
+        <span class="qm-label">📆 Daily Missions</span>
         <b>${missionsDone}/${missionsTotal}</b>
         <div class="bar-track sm"><div class="bar-fill" style="width:${(missionsDone/missionsTotal)*100}%"></div></div>
       </div>
       <div class="quest-mini">
-        <span class="qm-label">🏁 This week</span>
+        <span class="qm-label">🏁 This Week</span>
         <b>${p.weekly.icon} ${p.weekly.title}</b>
         <span class="qm-sub">${p.weekly.done?'Completed ✓':'In progress'}</span>
       </div>
       <div class="quest-mini">
-        <span class="qm-label">🗓️ Monthly check-up</span>
+        <span class="qm-label">🗓️ Monthly Check-Up</span>
         <b>${monthDone}/${p.monthly.items.length}</b>
         <div class="bar-track sm"><div class="bar-fill" style="width:${(monthDone/p.monthly.items.length)*100}%;background:var(--grad-2)"></div></div>
       </div>
     </div>
     <div class="tip-strip"><span class="tip-ico">💡</span><span><b>Tip of the day:</b> ${tip}</span></div>
     ${recActivities.length ? `<div class="rec-row">
-      <span class="qm-label" style="margin-bottom:8px;display:block">Recommended for you</span>
+      <span class="qm-label" style="margin-bottom:8px;display:block">Recommended for You</span>
       <div class="rec-chips">${recActivities.map(r=>`<button class="rec-chip" data-go="${r.go}"${r.level?` data-level="${r.level}"`:''}>${r.icon} ${r.label}</button>`).join('')}</div>
     </div>`:''}
   </div>`;
@@ -1585,12 +1575,12 @@ function recommendedActivities(){
   const out = [];
   const curLevel = currentLevelNumber();
   if(totalXP() < TOTAL_XP || advTotalXP() < ADV_TOTAL_XP) out.push({icon:'🗺️', label:`Resume Level ${curLevel}`, go:'level-detail', level:curLevel});
-  if(p.daily.missions.some(m=>!m.done)) out.push({icon:'🎯', label:'Finish today\'s missions', go:'hub'});
-  if(!p.daily.quizAnswered) out.push({icon:'🧠', label:'Quiz of the day', go:'hub'});
-  if(p.daily.review && Object.keys(p.daily.review.answers).length < p.daily.review.picks.length) out.push({icon:'🔁', label:'Review challenge', go:'hub'});
-  if(!p.weekly.done) out.push({icon:'🏁', label:'Weekly challenge', go:'hub'});
-  if(p.monthly.items.some(i=>!i.done)) out.push({icon:'🗓️', label:'Monthly check-up', go:'hub'});
-  if(!p.leaderboardOptIn) out.push({icon:'📊', label:'Join the leaderboard', go:'leaderboard'});
+  if(p.daily.missions.some(m=>!m.done)) out.push({icon:'🎯', label:'Finish Today\'s Missions', go:'hub'});
+  if(!p.daily.quizAnswered) out.push({icon:'🧠', label:'Quiz of the Day', go:'hub'});
+  if(p.daily.review && Object.keys(p.daily.review.answers).length < p.daily.review.picks.length) out.push({icon:'🔁', label:'Review Challenge', go:'hub'});
+  if(!p.weekly.done) out.push({icon:'🏁', label:'Weekly Challenge', go:'hub'});
+  if(p.monthly.items.some(i=>!i.done)) out.push({icon:'🗓️', label:'Monthly Check-Up', go:'hub'});
+  if(!p.leaderboardOptIn) out.push({icon:'📊', label:'Join the Leaderboard', go:'leaderboard'});
   return out.slice(0,4);
 }
 
@@ -1611,7 +1601,7 @@ function viewDashboard(user){
   const completedChecklist = p.checklistDone.length;
 
   return `
-  <div class="page-head"><div><h1>Welcome back, ${esc(user.name.split(' ')[0])} 👋</h1><p>Here's where your quest stands today.</p></div></div>
+  <div class="page-head"><div><h1>Welcome Back, ${esc(user.name.split(' ')[0])} 👋</h1><p>Here's where your quest stands today.</p></div></div>
 
   <div class="continue-card">
     <div><h3>${allDone?'You completed PassQuest! 🎉':`Continue: Level ${curLevel} — ${lvl.title}`}</h3>
@@ -1632,7 +1622,7 @@ function viewDashboard(user){
         </div>
       </div>
       <div class="xp-block">
-        <div class="xp-row"><span>${onAdvanced?'Advanced Track':'Foundation Track'} progress</span><b>${trackXP} / ${trackMax} XP</b></div>
+        <div class="xp-row"><span>${onAdvanced?'Advanced Track':'Foundation Track'} Progress</span><b>${trackXP} / ${trackMax} XP</b></div>
         <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="stat-row">
@@ -1654,7 +1644,7 @@ function viewDashboard(user){
   ${skillAreasMarkup()}
 
   <div class="card" style="margin-bottom:20px">
-    <div class="section-title">Your badges <a href="#" data-go="checklist">View checklist →</a></div>
+    <div class="section-title">Your Badges <a href="#" data-go="checklist">View Checklist →</a></div>
     <div class="badge-row">
       ${Object.entries(BADGE_DEFS).map(([id,b])=>{
         const earned = p.badges.includes(id);
@@ -1672,7 +1662,7 @@ function viewDashboard(user){
     </div>
   </div>
 
-  <div class="section-title">Level map</div>
+  <div class="section-title">Level Map</div>
   ${levelGridMarkup(CORE_LEVELS)}
   ${advancedTrackBlock()}
   ${allDone ? '' : todaysQuestMarkup()}
@@ -1682,7 +1672,7 @@ function viewDashboard(user){
 /* ---------- learning progress by skill area (dashboard) ---------- */
 function skillAreasMarkup(){
   return `<div class="card" style="margin-bottom:20px">
-    <div class="section-title">Your learning progress by skill area</div>
+    <div class="section-title">Your Learning Progress by Skill Area</div>
     <div class="skill-grid">${SKILL_AREAS.map(a=>{
       const earned = a.levels.reduce((s,id)=>s+levelEarnedXP(id),0);
       const pct = Math.round(earned/(a.levels.length*LEVEL_XP)*100);
@@ -1707,7 +1697,7 @@ function advancedTrackBlock(){
     return `<div class="card adv-teaser reveal" style="margin-top:8px">
       <div class="adv-teaser-ico">🚀</div>
       <div>
-        <h3 style="font-size:16px;margin-bottom:6px">Advanced Track — locked</h3>
+        <h3 style="font-size:16px;margin-bottom:6px">Advanced Track — Locked</h3>
         <p style="color:var(--text-dim);font-size:13.5px">Earn your Password Safety Champion certificate by completing all 5 core levels to unlock 5 more levels: ${listTitles(ADV_LEVELS)}.</p>
       </div>
     </div>`;
@@ -1800,8 +1790,8 @@ function factorChips(keys, label){
 
 // SOP 2 callout on the levels built around the highest and lowest findings.
 function researchNoteMarkup(lvl){
-  if(lvl.research==='lowest') return `<div class="research-note low"><div class="rn-ico">📊</div><div><b>Why this level matters</b><p>In our survey, <b>updating or changing social media passwords</b> was the least practiced habit (mean ${SOP2.lowest.value}, “${SOP2.lowest.verbal}”). That's why password maintenance gets extra practice here and in Habit Mode's check-ups.</p></div></div>`;
-  if(lvl.research==='highest') return `<div class="research-note high"><div class="rn-ico">📊</div><div><b>You're already good at this</b><p>In our survey, <b>being careful when logging in on shared or public devices</b> was the most consistently practiced habit (mean ${SOP2.highest.value}, “${SOP2.highest.verbal}”). This level helps keep that strength strong.</p></div></div>`;
+  if(lvl.research==='lowest') return `<div class="research-note low"><div class="rn-ico">📊</div><div><b>Why This Level Matters</b><p>In our survey, <b>updating or changing social media passwords</b> was the least practiced habit (mean ${SOP2.lowest.value}, “${SOP2.lowest.verbal}”). That's why password maintenance gets extra practice here and in Habit Mode's check-ups.</p></div></div>`;
+  if(lvl.research==='highest') return `<div class="research-note high"><div class="rn-ico">📊</div><div><b>You're Already Good at This</b><p>In our survey, <b>being careful when logging in on shared or public devices</b> was the most consistently practiced habit (mean ${SOP2.highest.value}, “${SOP2.highest.verbal}”). This level helps keep that strength strong.</p></div></div>`;
   return '';
 }
 
@@ -1940,7 +1930,7 @@ function viewChecklistHub(){
     <div class="xp-tag" style="font-size:14px;padding:8px 16px">${doneCount} / ${CHECKLIST_ITEM_COUNT} completed</div>
   </div>
   <div class="bar-track" style="margin-bottom:28px"><div class="bar-fill" style="width:${(doneCount/CHECKLIST_ITEM_COUNT)*100}%;background:var(--grad-2)"></div></div>
-  <div class="section-title">🛡️ Foundation Track <span class="xp-tag">Checklist Master badge</span></div>
+  <div class="section-title">🛡️ Foundation Track <span class="xp-tag">Checklist Master Badge</span></div>
   ${CORE_LEVELS.map(block).join('')}
   <div class="section-title" style="margin-top:8px">🚀 Advanced Track</div>
   ${ADV_LEVELS.map(block).join('')}
@@ -1976,7 +1966,7 @@ function viewChecker(){
       <div class="tips-box" id="pwTips" style="display:none"><b>💡 Suggestions</b><ul id="pwTipsList"></ul></div>
     </div>
     <div class="checker-card">
-      <div class="section-title" style="margin-bottom:14px">🎲 Generate a strong password</div>
+      <div class="section-title" style="margin-bottom:14px">🎲 Generate a Strong Password</div>
       <p style="font-size:13.5px;color:var(--text-dim);margin-bottom:16px">Need inspiration? Generate a random, high-strength password you can adapt and remember.</p>
       <div class="gen-pw-box">
         <div class="gen-pw-display" id="genPwDisplay">Click generate to create one</div>
@@ -2017,7 +2007,7 @@ function viewHub(){
     return `<div class="page-head"><div><h1>🔁 Habit Mode</h1><p>Unlocks after completing all 10 levels.</p></div></div>
     <div class="cert-lock">
       <div class="big-ico">🔒</div>
-      <h3 style="margin-bottom:8px">Habit Mode locked</h3>
+      <h3 style="margin-bottom:8px">Habit Mode Locked</h3>
       <p style="color:var(--text-dim);margin-bottom:20px">Finish the remaining ${remaining} level${remaining===1?'':'s'} across the Foundation and Advanced Tracks to unlock daily missions, weekly challenges, rotating quizzes, monthly password health checks, and new badges.</p>
       <button class="btn btn-primary" data-go="levels">Continue learning →</button>
     </div>`;
@@ -2136,7 +2126,7 @@ function viewLeaderboard(user){
     return `<div class="page-head"><div><h1>📊 Leaderboard</h1><p>See how your total XP compares with other Paulinian questers.</p></div></div>
     <div class="card" style="text-align:center;padding:44px 24px">
       <div class="big-ico">📊</div>
-      <h3 style="margin:10px 0 8px">Join the leaderboard</h3>
+      <h3 style="margin:10px 0 8px">Join the Leaderboard</h3>
       <p style="color:var(--text-dim);max-width:400px;margin:0 auto 20px">Opt in to share your name, strand, and total XP with other students so you can see how you rank. You can leave anytime from your profile.</p>
       <button class="btn btn-primary" id="joinLeaderboardBtn">Join leaderboard</button>
     </div>`;
@@ -2168,7 +2158,7 @@ function viewCertificate(user){
     return `<div class="page-head"><div><h1>Certificates</h1><p>Complete all 5 Foundation Track levels to unlock your first certificate.</p></div></div>
     <div class="cert-lock">
       <div class="big-ico">🔒</div>
-      <h3 style="margin-bottom:8px">Certificate locked</h3>
+      <h3 style="margin-bottom:8px">Certificate Locked</h3>
       <p style="color:var(--text-dim);margin-bottom:20px">You've earned ${t} / ${TOTAL_XP} XP. Finish every Foundation Track level to unlock your "Password Safety Champion" certificate.</p>
       <button class="btn btn-primary" data-go="levels">Continue learning →</button>
     </div>`;
@@ -2207,7 +2197,7 @@ function advCertificateBlock(user){
     return `<div class="card adv-teaser reveal" style="margin-top:24px">
       <div class="adv-teaser-ico">🎖️</div>
       <div>
-        <h3 style="font-size:16px;margin-bottom:6px">Advanced Certificate: locked</h3>
+        <h3 style="font-size:16px;margin-bottom:6px">Advanced Certificate: Locked</h3>
         <p style="color:var(--text-dim);font-size:13.5px">Complete all 5 Advanced Track levels (${advXp} / ${ADV_TOTAL_XP} XP) to earn a second certificate: Cyber Sentinel.</p>
       </div>
     </div>`;
@@ -2247,12 +2237,12 @@ function viewProfile(user){
       <div class="profile-info"><h3>${esc(user.name)}</h3><p>${esc(user.strand)} · ${esc(user.section)}</p></div>
     </div>
     <div class="field"><label>Username</label><div class="mono" style="color:var(--text-dim)">${esc(user.username)}</div></div>
-    <div class="field"><label>School email</label><div style="color:var(--text-dim)">${esc(user.email)}</div></div>
+    <div class="field"><label>School Email</label><div style="color:var(--text-dim)">${esc(user.email)}</div></div>
     <div class="field"><label>Foundation Track XP</label><div class="mono" style="color:var(--cyan)">${totalXP()} / ${TOTAL_XP}</div></div>
     <div class="field"><label>Advanced Track XP</label><div class="mono" style="color:var(--cyan)">${advTotalXP()} / ${ADV_TOTAL_XP}</div></div>
     <div class="field"><label>Bonus XP (missions, challenges &amp; more)</label><div class="mono" style="color:var(--amber)">${bonusXP()}</div></div>
     <div class="field"><label>Lifetime XP</label><div class="mono" style="color:var(--text)">${grandTotalXP()}</div></div>
-    <div class="field"><label>Current streak</label><div style="color:var(--amber)">🔥 ${p.streak} days</div></div>
+    <div class="field"><label>Current Streak</label><div style="color:var(--amber)">🔥 ${p.streak} days</div></div>
     <div class="field"><label>Leaderboard</label><div style="color:var(--text-dim)">${p.leaderboardOptIn?'Visible to other students':'Private'} · <a href="#" data-go="leaderboard">${p.leaderboardOptIn?'Manage':'Join'} →</a></div></div>
     <button class="btn btn-outline btn-block" id="logoutBtn" style="margin-top:12px">Log out</button>
   </div>`;
@@ -2268,7 +2258,8 @@ function viewProfile(user){
    Password Challenge are checked in the browser only: never saved or sent.
    ========================================================= */
 
-/* ---------- catalogue, research links, rewards ---------- */
+/* ---------- catalogue and rewards ---------- */
+// factors: the SOP 1 factors each game practices (for the researchers; not shown in the game UI)
 const GAME_XP_DAILY_CAP = 25; // per game per day, so replays can't farm leaderboard XP
 
 const GAMES = {
@@ -2276,21 +2267,21 @@ const GAMES = {
     title:'Reflex Sort', icon:'⚡', kind:'Arcade · 45 seconds',
     blurb:'Passwords fly across the screen. Tap only the weak ones before they escape!',
     factors:['awareness','convenience','management','experience'],
-    research:'Trains you to spot the predictable passwords students choose for convenience: names, birthdays, common words, and patterns.',
+    practice:'Spot predictable passwords fast: names, birthdays, common words, and keyboard patterns.',
     badge:'reflexRookie', badgeRule:'Score 300+ with at least 80% accuracy'
   },
   breach: {
     title:'Escape the Breach', icon:'🚨', kind:'Story · 2 minutes',
     blurb:'A fictional account was hit. Make quick, smart moves to secure it before time runs out.',
     factors:['experience','awareness','management','social'],
-    research:'Includes updating a password at the right time (our lowest-rated habit, 2.45) and logging out of a shared computer (our highest, 3.65).',
+    practice:'Handle a suspicious login: spot phishing, update the password, turn on 2FA, and log out of shared devices.',
     badge:'breachDefender', badgeRule:'Secure the account before time runs out'
   },
   challenge: {
     title:'Password Challenge', icon:'🧩', kind:'Puzzle · your pace',
     blurb:'Build one fictional password that survives more and more ridiculous rules.',
     factors:['convenience','awareness','management','experience'],
-    research:'Shows that a password can be memorable and fun without birthdays, names, or other personal information.',
+    practice:'Build a memorable password without birthdays, names, or other personal information.',
     badge:'passwordArchitect', badgeRule:'Satisfy every rule'
   }
 };
@@ -2347,15 +2338,14 @@ function viewGames(){
       <div class="game-card-top"><span class="game-icon">${gm.icon}</span><span class="practice-kind">${gm.kind}</span></div>
       <h3>${gm.title}</h3>
       <p class="game-blurb">${gm.blurb}</p>
-      ${factorChips(gm.factors)}
       <div class="game-stats"><span>Best <b>${gameBestLabel(key,g)}</b></span><span>XP today <b>${g.xpDay[key]} / ${GAME_XP_DAILY_CAP}</b></span></div>
       <div class="game-badge${earned?' earned':''}"><span class="hex ${earned?b.cls:'hex-locked'}">${earned?b.icon:'🔒'}</span><span><b>${b.name}</b><br>${earned?'Badge earned ✓':gm.badgeRule}</span></div>
       <button class="btn btn-primary btn-block" data-game-open="${key}">Play ${gm.title} →</button>
     </div>`;
   }).join('')}</div>
   <div class="card games-research reveal">
-    <div class="section-title" style="margin-bottom:10px">🔬 How the games connect to our study</div>
-    <div class="games-research-list">${Object.values(GAMES).map(gm=>`<div><b>${gm.icon} ${gm.title}</b><span>${gm.research}</span></div>`).join('')}</div>
+    <div class="section-title" style="margin-bottom:10px">🎯 What Each Game Practices</div>
+    <div class="games-research-list">${Object.values(GAMES).map(gm=>`<div><b>${gm.icon} ${gm.title}</b><span>${gm.practice}</span></div>`).join('')}</div>
     <div class="games-role">${[['📖','Lessons','Learn'],['🎯','Quizzes','Check understanding'],['✅','Checklist','Apply and monitor habits'],['🔁','Habit Mode','Maintain'],['🎮','Password Games','Enjoyable extra practice']].map(([i,t,s])=>`<span><b>${i} ${t}</b> ${s}</span>`).join('')}</div>
     <p class="skill-note">The games promote awareness and give you chances to practice. A high score is a game result, not proof of how secure your real accounts are.</p>
   </div>`;
@@ -2364,7 +2354,7 @@ function viewGames(){
 function viewGame(key){
   const gm = GAMES[key], r = STATE.gameResult && STATE.gameResult.key===key ? STATE.gameResult : null;
   return `<button class="btn btn-ghost btn-sm" data-game-close style="margin-bottom:18px">← Back to Password Games</button>
-  <div class="page-head"><div><h1>${gm.icon} ${gm.title}</h1><p>${gm.blurb}</p>${factorChips(gm.factors,'Built from our findings:')}</div></div>
+  <div class="page-head"><div><h1>${gm.icon} ${gm.title}</h1><p>${gm.blurb}</p></div></div>
   <div class="game-stage" id="gameStage">${r ? gameResultMarkup(key, r) : gameIntroMarkup(key)}</div>`;
 }
 
@@ -2552,7 +2542,7 @@ function startReflexSort(stage){
 /* ---------- Game 2: Escape the Breach ---------- */
 const BREACH_TIME = 120; // seconds
 const BREACH_STEPS = [
-  {title:'Spot the trap', icon:'📬', kind:'inbox',
+  {title:'Spot the Trap', icon:'📬', kind:'inbox',
    ask:'Three new messages arrived. Tap the one that is a phishing trap.',
    items:[
      {from:'Instagram Security Team', meta:'no-reply@instagrarn-help.co', text:'⚠️ Your account will be DELETED in 24 hours. Verify your password now: instagrarn-verify.co/login', bad:true,
@@ -2562,7 +2552,7 @@ const BREACH_STEPS = [
      {from:'Bea (classmate)', meta:'Messenger', text:'Did you finish the Gen Math worksheet? 😭', bad:false,
       fb:"Not quite. That's just your classmate asking about homework."}
    ]},
-  {title:'Take back control', icon:'🔑', kind:'recover',
+  {title:'Take Back Control', icon:'🔑', kind:'recover',
    ask:'Someone else logged in. What do you do first?',
    actions:[
      {t:'Tap “Verify now” in that DELETED-in-24-hours message', ok:false, fb:"That's the phishing link from the last step. Never log in through a link in a message."},
@@ -2573,13 +2563,13 @@ const BREACH_STEPS = [
    passwords:[
      {t:'mika2009', ok:false, fb:"Your friend means well, but that's the old password: a name plus a birth year. Pick something new and unpredictable."},
      {t:'Mika2010', ok:false, fb:"Changing one number keeps the same guessable pattern."},
-     {t:'Ulap-Kidlat-Pinya-904', ok:true, fb:"Long, unpredictable, and brand new. Right after a suspicious login is exactly the right time to update a password. In our study, updating passwords was the least practiced habit (2.45, “Sometimes”)."}
+     {t:'Ulap-Kidlat-Pinya-904', ok:true, fb:"Long, unpredictable, and brand new. Right after a suspicious login is exactly the right time to update a password."}
    ]},
-  {title:'Add a second lock', icon:'🛡️', kind:'settings',
+  {title:'Add a Second Lock', icon:'🛡️', kind:'settings',
    ask:'Turn on the two protections, and stop showing your birthday to the public.',
    toggles:[
-     {id:'tfa', label:'Two-factor authentication', start:false, want:true},
-     {id:'alerts', label:'Login alerts', start:false, want:true},
+     {id:'tfa', label:'Two-Factor Authentication', start:false, want:true},
+     {id:'alerts', label:'Login Alerts', start:false, want:true},
      {id:'bday', label:'Show my birthday on my profile', start:true, want:false}
    ],
    code:'482 913',
@@ -2588,11 +2578,11 @@ const BREACH_STEPS = [
      {t:'Send the code', ok:false, fb:"Never share a login code, not even with “support”. That's exactly how someone gets past 2FA."},
      {t:"Don't send it, and report the account", ok:true, fb:"Login codes are only for you. Real support never asks for them."}
    ]},
-  {title:'Check where you’re logged in', icon:'💻', kind:'devices',
+  {title:'Check Where You’re Logged In', icon:'💻', kind:'devices',
    ask:'Log out of every session that shouldn’t be there.',
    devices:[
-     {id:'phone', icon:'📱', name:'Your phone', meta:'This device · now', out:false, fb:"That's the phone you're using right now. Keep it."},
-     {id:'library', icon:'🖥️', name:'Library PC · Chrome', meta:'School library · yesterday', out:true, fb:"Nice! Logging out of shared computers is the habit students in our study practiced most (3.65, “Always”). Keep it up!"},
+     {id:'phone', icon:'📱', name:'Your Phone', meta:'This device · now', out:false, fb:"That's the phone you're using right now. Keep it."},
+     {id:'library', icon:'🖥️', name:'Library PC · Chrome', meta:'School library · yesterday', out:true, fb:"Nice! Logging out of shared or public computers keeps the account safe after you leave. Keep it up!"},
      {id:'unknown', icon:'❓', name:'Unknown Android', meta:'Cebu · 2 hours ago', out:true, fb:"That's the intruder's session. Logged out!"}
    ]}
 ];
@@ -2627,7 +2617,7 @@ function startEscapeBreach(stage){
       html += `<div class="br-inbox">${order('msg', st.items.length).map(i=>{ const m = st.items[i]; return `<button class="br-msg" data-br="msg" data-i="${i}" ${s.fb&&s.fb.ok?'disabled':''}><b>${m.from}</b><small>${m.meta}</small><span>${m.text}</span></button>`; }).join('')}</div>`;
     } else if(st.kind==='recover'){
       if(s.sub===0) html += `<div class="br-sheet">${order('act', st.actions.length).map(i=>`<button class="q-opt" data-br="act" data-i="${i}" ${s.fb&&s.fb.ok?'disabled':''}>${st.actions[i].t}</button>`).join('')}</div>`;
-      else html = `<h3 class="br-title">${st.icon} Pick a new password</h3><p class="br-ask">You're in the app's settings. Choose the new (fictional) password.</p>
+      else html = `<h3 class="br-title">${st.icon} Pick a New Password</h3><p class="br-ask">You're in the app's settings. Choose the new (fictional) password.</p>
         <div class="br-chat"><span class="br-who">🧑‍🎤 Your friend</span><div class="br-bubble">${st.friend}</div></div>
         <div class="br-sheet">${order('pw', st.passwords.length).map(i=>`<button class="q-opt mono" data-br="pw" data-i="${i}" ${s.fb&&s.fb.ok?'disabled':''}>${st.passwords[i].t}</button>`).join('')}</div>`;
     } else if(st.kind==='settings'){
@@ -2635,7 +2625,7 @@ function startEscapeBreach(stage){
         st.toggles.forEach(t=>{ if(s.toggles[t.id]===undefined) s.toggles[t.id] = t.start; });
         html += `<div class="br-settings">${st.toggles.map(t=>`<button class="br-toggle${s.toggles[t.id]?' on':''}" data-br="toggle" data-id="${t.id}" role="switch" aria-checked="${s.toggles[t.id]}"><span>${t.label}</span><i></i></button>`).join('')}</div>
           <button class="btn btn-primary" data-br="save">Save settings</button>`;
-      } else html = `<h3 class="br-title">${st.icon} One more thing…</h3><p class="br-ask">A text and a DM just arrived. What do you do?</p>
+      } else html = `<h3 class="br-title">${st.icon} One More Thing…</h3><p class="br-ask">A text and a DM just arrived. What do you do?</p>
         <div class="br-sms">💬 <b>Instagram:</b> ${st.code} is your login code. Don't share it with anyone.</div>
         <div class="br-chat"><span class="br-who">👤 “Instagram Support”</span><div class="br-bubble">${st.dm}</div></div>
         <div class="br-sheet">${order('reply', st.replies.length).map(i=>`<button class="q-opt" data-br="reply" data-i="${i}" ${s.fb&&s.fb.ok?'disabled':''}>${st.replies[i].t}</button>`).join('')}</div>`;
@@ -2729,15 +2719,15 @@ const PC_RULES = [
   {intro:'🔢 Let’s start simple.', text:'Your password must be at least 8 characters.', check:i=>i.len>=8},
   {intro:'🧮 Numbers make everything better.', text:'Add a number.', check:i=>/\d/.test(i.pw)},
   {intro:'✨ Sprinkle some symbols.', text:'Add a special character, like ! @ # or -.', check:i=>i.chars.some(pcIsSpecial)},
-  {intro:'🎂 No birthday parties in here!', text:'No birthdays or dates: no years like 2009, no dates like 3-15, no month names.', research:true,
+  {intro:'🎂 No birthday parties in here!', text:'No birthdays or dates: no years like 2009, no dates like 3-15, no month names.', safety:true,
    check:i=>!/(19[5-9]\d|20[0-3]\d)/.test(i.pw) && !/(^|\D)\d{1,2}[\/.\-]\d{1,2}(\D|$)/.test(i.pw) && !PC_MONTHS.some(m=>i.lower.includes(m))},
   {intro:'🎨 The system is feeling colorful.', text:'Include a color (like pink, gold, navy, or lilac).', check:i=>PC_COLORS.some(w=>i.lower.includes(w))},
   {intro:'🐸 A frog has entered the security system...', text:'Include an animal (like frog, koala, owl, or carabao).', check:i=>PC_ANIMALS.some(w=>i.lower.includes(w))},
-  {intro:'🕵️ Personal info detected?', text:'Don’t use your own name or username. People who know you would guess it first.', research:true,
+  {intro:'🕵️ Personal info detected?', text:'Don’t use your own name or username. People who know you would guess it first.', safety:true,
    check:i=>i.names.every(n=>!i.lower.includes(n))},
   {intro:'😎 Passwords need personality.', text:'Include exactly one emoji.', check:i=>(i.pw.match(pcEmoji)||[]).length===1},
   {intro:'🧙 The Password Wizard demands a Roman numeral.', text:'Include a capital Roman numeral: I, V, X, L, C, D, or M.', check:i=>/[IVXLCDM]/.test(i.pw)},
-  {intro:'🚨 SECURITY ALERT! That password is looking suspiciously predictable.', text:'No predictable patterns: no “123”, “abc”, “qwer”, “asdf”, the word “password”, or any character 3 times in a row.', research:true,
+  {intro:'🚨 SECURITY ALERT! That password is looking suspiciously predictable.', text:'No predictable patterns: no “123”, “abc”, “qwer”, “asdf”, the word “password”, or any character 3 times in a row.', safety:true,
    check:i=>!/123|abc|qwer|asdf|password/i.test(i.pw) && !/(.)\1\1/u.test(i.pw)},
   {intro:'🪞 Mirror, mirror, on the screen...', text:'Include a palindrome: 3+ letters or numbers that read the same backwards, like “kayak” or “wow”.', check:i=>pcHasPalindrome(i.lower)},
   {intro:'🍕 Emergency pizza protocol activated.', text:'Include something food-related (like pizza, mango, adobo, or taho).', check:i=>PC_FOODS.some(w=>i.lower.includes(w))},
@@ -2745,7 +2735,7 @@ const PC_RULES = [
   {intro:'👯 Twins detected...', text:'Include exactly one double letter: the same character twice in a row, like “oo”. Only one pair!', check:i=>pcDoubles(i.chars)===1},
   {intro:'🔒 Lockie wants to be part of this.', text:'Include Lockie’s initial: a capital L.', check:i=>i.pw.includes('L')},
   {intro:'🚫 The letter E has been banned from the kingdom.', text:'Remove every e and E. (Swap words like “purple” for “lilac”.)', check:i=>!/e/i.test(i.pw)},
-  {intro:'🚨 SECURITY ALERT! Make it harder to guess.', text:'Use at least 2 different special characters.', research:true, check:i=>new Set(i.chars.filter(pcIsSpecial)).size>=2},
+  {intro:'🚨 SECURITY ALERT! Make it harder to guess.', text:'Use at least 2 different special characters.', safety:true, check:i=>new Set(i.chars.filter(pcIsSpecial)).size>=2},
   {intro:'📏 Final boss!', text:'Your password must now be at least 20 characters long.', check:i=>i.len>=20}
 ];
 function pcInfo(pw, names){ const chars = Array.from(pw); return {pw, chars, len:chars.length, lower:pw.toLowerCase(), names}; }
@@ -2767,7 +2757,7 @@ function startPasswordChallenge(stage){
     stage.querySelector('#pcLen').textContent = Array.from(input.value).length + ' characters';
     stage.querySelector('#pcProgress').textContent = `Rule ${s.shown} of ${PC_RULES.length}`;
     list.innerHTML = PC_RULES.slice(0, s.shown).map((r,k)=>({r,k})).reverse().map(({r,k})=>`<div class="pc-rule ${ok[k]?'pass':'fail'}${k===s.shown-1?' newest':''}">
-        <div class="pc-rule-head"><span>Rule ${k+1}${r.research?' <em>· from our research</em>':''}</span><b>${ok[k]?'✓':'✗'}</b></div>
+        <div class="pc-rule-head"><span>Rule ${k+1}${r.safety?' <em>· safety rule</em>':''}</span><b>${ok[k]?'✓':'✗'}</b></div>
         ${k===s.shown-1?`<p class="pc-intro">${r.intro}</p>`:''}<p>${r.text}</p>
       </div>`).join('');
     if(ok.every(Boolean)){
