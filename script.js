@@ -792,6 +792,7 @@ function newSalt(){
   return Array.from(a, b=>b.toString(16).padStart(2,'0')).join('');
 }
 function hashPassword(pw, salt){ return sha256(salt+':'+pw); }
+function sameUsername(a, b){ return String(a).toLowerCase()===String(b).toLowerCase(); }
 function checkPassword(user, pw){
   if(user.passwordHash) return hashPassword(pw, user.salt)===user.passwordHash;
   return user.password===pw; // accounts saved before hashing (migrated on load)
@@ -1407,12 +1408,13 @@ function viewAuth(mode){
         <h2>Welcome Back</h2><p class="sub">Log in to continue your quest.</p>
         <div id="formMsg" class="form-msg"></div>
         <form id="loginForm">
-          <div class="field"><label>Username</label><input type="text" id="li_username" placeholder="e.g. juan.delacruz" required></div>
+          <div class="field"><label>Username</label><input type="text" id="li_username" placeholder="e.g. juan.delacruz" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
           <div class="field"><label>Password</label>
             <div class="pw-toggle-wrap"><input type="password" id="li_password" placeholder="••••••••" required><span class="pw-eye" data-eyefor="li_password">👁️</span></div>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
+        <p class="auth-note">💾 Your account is saved only on the device and browser where you created it. Log in there, not in a private or incognito window.</p>
         <div class="auth-switch">New to PassQuest? <a href="#" data-go="register">Create an account</a></div>
       ` : `
         <h2>Create Your Account</h2><p class="sub">Begin your password safety journey.</p>
@@ -1424,7 +1426,7 @@ function viewAuth(mode){
             <div class="field"><label>Grade &amp; Section</label><input type="text" id="r_section" placeholder="Grade 11 - St. Paul" required></div>
           </div>
           <div class="field"><label>School Email</label><input type="email" id="r_email" placeholder="you@spum.edu.ph" required></div>
-          <div class="field"><label>Username</label><input type="text" id="r_username" placeholder="Choose a username" required></div>
+          <div class="field"><label>Username</label><input type="text" id="r_username" placeholder="Choose a username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
           <div class="field"><label>Password</label>
             <div class="pw-toggle-wrap"><input type="password" id="r_password" placeholder="Create a strong password" required><span class="pw-eye" data-eyefor="r_password">👁️</span></div>
             <div class="field-hint">Tip: aim for 12+ characters with a mix of letters, numbers &amp; symbols. Make a new password just for PassQuest; don't reuse your social media password.</div>
@@ -1437,6 +1439,7 @@ function viewAuth(mode){
           </div>
           <button type="submit" class="btn btn-primary btn-block">Create account</button>
         </form>
+        <p class="auth-note">💾 Your account is saved only on this device and browser. Sign up on the one you'll keep using, not in a private or incognito window or inside Messenger or Facebook.</p>
         <div class="auth-switch">Already have an account? <a href="#" data-go="login">Log in</a></div>
 
         <div class="modal-overlay hidden" id="termsModal">
@@ -3089,11 +3092,13 @@ async function handleLogin(e){
   e.preventDefault();
   const username = document.getElementById('li_username').value.trim();
   const password = document.getElementById('li_password').value;
-  const user = STATE.users.find(u=>u.username===username && checkPassword(u, password));
+  // Usernames aren't case-sensitive ("Juan" = "juan"); an exact match wins if an older account differs only by case.
+  const user = STATE.users.find(u=>u.username===username && checkPassword(u, password))
+    || STATE.users.find(u=>sameUsername(u.username, username) && checkPassword(u, password));
   if(!user){ showFormMsg('Incorrect username or password. Please try again.', false); return; }
-  STATE.session = username;
-  await sset('passquest_session', username);
-  STATE.progress = (await sget('passquest_progress_'+username)) || freshProgress();
+  STATE.session = user.username; // the saved spelling, which progress is stored under
+  await sset('passquest_session', user.username);
+  STATE.progress = (await sget('passquest_progress_'+user.username)) || freshProgress();
   normalizeProgress();
   await linkSupabaseUser(user);
   await touchStreak();
@@ -3115,7 +3120,7 @@ async function handleRegister(e){
 
   if(username.length<3){ showFormMsg('Username must be at least 3 characters.', false); return; }
   if(password.length<6){ showFormMsg('Password must be at least 6 characters.', false); return; }
-  if(STATE.users.find(u=>u.username===username)){ showFormMsg('That username is already taken.', false); return; }
+  if(STATE.users.find(u=>sameUsername(u.username, username))){ showFormMsg('That username is already taken.', false); return; }
   if(!document.getElementById('r_terms').checked){ showFormMsg('Please agree to the Terms and Conditions to create an account.', false); return; }
 
   const salt = newSalt();

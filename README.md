@@ -139,7 +139,7 @@ Data is saved in two places at once.
 
 | Key | Holds |
 |---|---|
-| `passquest_users` | Every account created on that browser (passwords stored as salted SHA-256 hashes) |
+| `passquest_users` | Every account created on that browser (passwords stored as salted SHA-256 hashes). Login only checks this list, so an account works only on the device and browser where it was made. Usernames aren't case-sensitive. |
 | `passquest_session` | Who is logged in |
 | `passquest_progress_<username>` | XP, lessons, checklist, quizzes, badges, streak, Habit Mode, Password Games stats (plays, best scores, XP earned today), leaderboard opt-in |
 | `passquest_user_id` | The logged-in student's Supabase user id (set at register and login, cleared at logout) |
@@ -176,6 +176,9 @@ The Password Games add no new tables. Game stats stay in the browser only, and t
 10. The certificate preview shrinks long dates and grades to fit, like the PNG does.
 11. The checklist hub lists all 22 items, in both tracks.
 12. Student-typed text is escaped before it's shown.
+13. Usernames aren't case-sensitive at login ("Juan" = "juan"), and phone keyboards no longer auto-capitalize the username box. The login and sign-up screens say accounts are saved only on that device and browser.
+
+**Known limit:** accounts live in the browser only. Logging in on another device or browser, in a private window, or after browsing data is cleared (including inside Messenger or Facebook's built-in browser) won't find the account. Fixing that means moving login to Supabase Auth.
 
 **Still needs you in the Supabase dashboard:**
 
