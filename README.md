@@ -133,18 +133,19 @@ Each level must add up to 100 XP: Learn + Practice 20 (earned by finishing the p
 
 ## How data is saved
 
-Data is saved in two places at once.
+**1. Accounts and progress (Supabase Auth + `student_progress`).** This is what the app reads back, so students can log in on any device.
 
-**1. The browser (localStorage).** This is what the app itself reads back.
+- Students sign up and log in with their **school email and password** (Supabase Auth). Supabase stores the password; PassQuest never sees it again after sending it.
+- Each student has one row in `student_progress`: username (unique, any capitalization), name, strand, section, and `progress`, the whole progress object: XP, lessons, checklist, quizzes, badges, streak, Habit Mode, Password Games stats, leaderboard opt-in.
+- Progress is saved about a second after each change, and right away when the tab is hidden or the student logs out.
+- Row Level Security: a logged-in student can read and change only their own row. Logged-out visitors can't read it at all.
+- The table is created by [`supabase/student_progress.sql`](supabase/student_progress.sql) (safe to run again).
 
-| Key | Holds |
-|---|---|
-| `passquest_users` | Every account created on that browser (passwords stored as salted SHA-256 hashes) |
-| `passquest_session` | Who is logged in |
-| `passquest_progress_<username>` | XP, lessons, checklist, quizzes, badges, streak, Habit Mode, Password Games stats (plays, best scores, XP earned today), leaderboard opt-in |
-| `passquest_user_id` | The logged-in student's Supabase user id (set at register and login, cleared at logout) |
+**Older accounts (browser only).** Before this change, accounts lived in the browser's localStorage: `passquest_users` (salted SHA-256 password hashes) and `passquest_progress_<username>`. The first time a student logs in on that device, with their old username or email and old password, the account and its progress are copied online with the same password. If someone already has that username online, a number is added (`juan` → `juan2`) and the student is told. The old browser data is left as it was.
 
-**2. Supabase** (`script.js` sections 22–23). Written alongside, for the research data.
+The browser also keeps the Supabase login (until the student logs out) and `passquest_user_id`, the student's id in the research `users` table (set at login, cleared at logout).
+
+**2. Research tables in Supabase** (`script.js` sections 22–23). Written alongside, for the research data.
 
 | Table | Written when |
 |---|---|
@@ -159,7 +160,7 @@ Data is saved in two places at once.
 
 Read-only helpers for `lessons`, `checklist_items`, `checklist_categories`, `badges` and `achievements` exist in section 22 but aren't used by any page yet.
 
-The Password Games add no new tables. Game stats stay in the browser only, and the Password Challenge password is never saved anywhere.
+The Password Games add no new tables. Game stats are part of the progress object in `student_progress`, and the Password Challenge password is never saved anywhere.
 
 ## Fixed issues and what still needs you
 
@@ -176,6 +177,20 @@ The Password Games add no new tables. Game stats stay in the browser only, and t
 10. The certificate preview shrinks long dates and grades to fit, like the PNG does.
 11. The checklist hub lists all 22 items, in both tracks.
 12. Student-typed text is escaped before it's shown.
+13. Accounts work on any device: login moved to Supabase Auth (school email + password) and progress is saved online in `student_progress`. Before, accounts lived only in the browser, so another device, a private window, Messenger's built-in browser or cleared browsing data lost them. Older browser-only accounts move online at their next login on that device.
+14. Usernames aren't case-sensitive ("Juan" = "juan"), and phone keyboards no longer auto-capitalize the login boxes.
+
+**Known limits:**
+- There's no "forgot password" yet (it needs email sending, below). If a student forgets theirs, delete them in Authentication → Users and they sign up again; their progress starts over.
+- If a student has PassQuest open on two devices at once, the last save wins.
+
+**Supabase login settings** (already done for the live project; repeat them for a new one):
+
+1. Authentication → Sign In / Providers → **Email** is Enabled.
+2. Same page, **User Signups** box: **Confirm email** OFF, **Allow new users to sign up** ON. Supabase's built-in email sender only emails the project's own team (2 emails an hour), so with Confirm email on, students can't sign up. To turn it back on, set up custom SMTP first (Authentication → Emails → SMTP Settings).
+3. Authentication → Rate Limits → **Rate limit for sign-ups and sign-ins**: 300. A class on school Wi-Fi shares one address, and the default is 30 per 5 minutes.
+4. Authentication → URL Configuration → **Site URL**: the live site's address.
+5. SQL Editor: run [`supabase/student_progress.sql`](supabase/student_progress.sql). Supabase warns about "destructive operations"; that's expected (the only DROPs re-create this script's own policies), so click Run query.
 
 **Still needs you in the Supabase dashboard:**
 
