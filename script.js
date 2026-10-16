@@ -4,10 +4,14 @@
    Manila SHS students. Plain JavaScript, no framework, no build step.
 
    HOW DATA IS SAVED
-   - Accounts and progress (XP, lessons, checklist, quizzes, badges,
-     streak, Habit Mode) are saved in the browser's localStorage
-     through sget()/sset() in section 8.
-   - Account passwords are stored as salted SHA-256 hashes, never as text.
+   - Accounts use Supabase Auth (school email + password), so students
+     can log in on any device. Supabase keeps the password, not the app.
+   - Each student's profile and whole progress object (XP, lessons,
+     checklist, quizzes, badges, streak, Habit Mode, games) is one row in
+     the Supabase table student_progress (section 22, "Online accounts").
+   - Accounts made before that lived only in the browser's localStorage
+     (passquest_users, salted SHA-256 password hashes). They are moved
+     online the first time the student logs in on that device.
    - Password Games stats live in progress.games; game XP goes into bonusXP.
    - The same events are also written to Supabase (sections 22-23):
      users, consent, user_progress, checklist_responses, user_badges,
@@ -812,7 +816,8 @@ function seededPick(arr, n, seedStr){
 
 /* =========================================================
    8. LOCAL SAVE LAYER (localStorage)
-   Keys: passquest_users, passquest_session, passquest_progress_<username>
+   Old browser-only accounts, read when moving them online:
+   passquest_users, passquest_progress_<username>
    ========================================================= */
 async function sget(key) {
   try {
@@ -837,8 +842,10 @@ async function sset(key, val) {
 let STATE = {
   view:'landing',
   authMode:'login',
-  session:null,       // username
-  users:[],           // [{username,name,strand,section,email,password}]
+  session:null,       // logged-in student's username
+  uid:null,           // their Supabase Auth user id
+  user:null,          // their profile {username,name,strand,section,email}
+  users:[],           // old browser-only accounts [{username,name,strand,section,email,salt,passwordHash}]
   progress:null,      // current user's progress object
   currentLevel:null,
   levelTab:'lesson',
@@ -862,19 +869,42 @@ function freshProgress(){
 async function boot(){
   STATE.users = (await sget('passquest_users')) || [];
   await migratePasswords();
-  const session = await sget('passquest_session');
-  const sessionUser = session && STATE.users.find(u=>u.username===session);
-  if(sessionUser){
-    STATE.session = session;
-    STATE.progress = (await sget('passquest_progress_'+session)) || freshProgress();
-    normalizeProgress();
-    await linkSupabaseUser(sessionUser);
-    await touchStreak();
-    refreshEngagement();
-    await saveProgress();
-    STATE.view='dashboard';
+  // Supabase remembers the login on this browser until the student logs out.
+  const { data } = await sb.auth.getSession();
+  let bootError = null;
+  if(data && data.session){
+    const res = await startSession(data.session.user);
+    if(res.ok) STATE.view='dashboard';
+    else bootError = authErrorText(res.error);
   }
   render(true);
+  if(bootError) toast('⚠️','Couldn’t open your account', esc(bootError));
+}
+
+// Load the student's online row (or create it on first login) and open their account.
+// newProfile / startProgress are only used when no row exists yet.
+async function startSession(authUser, newProfile, startProgress, renameIfTaken){
+  let { data:row, error } = await loadOnlineAccount(authUser.id);
+  if(error) return { error };
+  const created = !row;
+  if(!row){
+    const meta = authUser.user_metadata || {};
+    const profile = newProfile || (meta.username ? { username:meta.username, name:meta.name||'', strand:meta.strand||'', section:meta.section||'' } : null);
+    if(!profile) return { error:{ code:'no_profile' } };
+    ({ data:row, error } = await createOnlineAccount(authUser.id, profile, startProgress || freshProgress(), renameIfTaken));
+    if(error) return { error };
+  }
+  STATE.uid = authUser.id;
+  STATE.user = { username:row.username, name:row.name, strand:row.strand, section:row.section, email:authUser.email };
+  STATE.session = row.username;
+  const saved = row.progress;
+  STATE.progress = saved && Object.keys(saved).length ? saved : (startProgress || freshProgress());
+  normalizeProgress();
+  await linkSupabaseUser(STATE.user);
+  await touchStreak();
+  refreshEngagement();
+  await saveProgress();
+  return { ok:true, created, renamed: created && !!newProfile && !sameUsername(row.username, newProfile.username) };
 }
 
 // Older accounts kept their PassQuest password in readable form; replace it with a salted hash.
@@ -957,8 +987,9 @@ async function touchStreak(){
 }
 
 async function saveProgress(){
-  await sset('passquest_progress_'+STATE.session, STATE.progress);
-  if(STATE.progress && STATE.progress.leaderboardOptIn) syncLeaderboardEntry();
+  if(!STATE.uid || !STATE.progress) return;
+  queueOnlineSave();
+  if(STATE.progress.leaderboardOptIn) syncLeaderboardEntry();
 }
 async function saveUsers(){
   await sset('passquest_users', STATE.users);
@@ -1408,13 +1439,15 @@ function viewAuth(mode){
         <h2>Welcome Back</h2><p class="sub">Log in to continue your quest.</p>
         <div id="formMsg" class="form-msg"></div>
         <form id="loginForm">
-          <div class="field"><label>Username</label><input type="text" id="li_username" placeholder="e.g. juan.delacruz" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
+          <div class="field"><label>School Email</label><input type="text" id="li_id" placeholder="you@spum.edu.ph" inputmode="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+            <div class="field-hint">Made your account before logins moved online? Your old username also works on the device where you made it.</div>
+          </div>
           <div class="field"><label>Password</label>
-            <div class="pw-toggle-wrap"><input type="password" id="li_password" placeholder="••••••••" required><span class="pw-eye" data-eyefor="li_password">👁️</span></div>
+            <div class="pw-toggle-wrap"><input type="password" id="li_password" placeholder="••••••••" autocomplete="current-password" required><span class="pw-eye" data-eyefor="li_password">👁️</span></div>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
-        <p class="auth-note">💾 Your account is saved only on the device and browser where you created it. Log in there, not in a private or incognito window.</p>
+        <p class="auth-note">🌐 Your account and progress are saved online. Log in with your school email on any device.</p>
         <div class="auth-switch">New to PassQuest? <a href="#" data-go="register">Create an account</a></div>
       ` : `
         <h2>Create Your Account</h2><p class="sub">Begin your password safety journey.</p>
@@ -1425,10 +1458,10 @@ function viewAuth(mode){
             <div class="field"><label>Strand</label><select id="r_strand">${strands.map(s=>`<option>${s}</option>`).join('')}</select></div>
             <div class="field"><label>Grade &amp; Section</label><input type="text" id="r_section" placeholder="Grade 11 - St. Paul" required></div>
           </div>
-          <div class="field"><label>School Email</label><input type="email" id="r_email" placeholder="you@spum.edu.ph" required></div>
+          <div class="field"><label>School Email</label><input type="email" id="r_email" placeholder="you@spum.edu.ph" autocomplete="email" required><div class="field-hint">You'll log in with this email.</div></div>
           <div class="field"><label>Username</label><input type="text" id="r_username" placeholder="Choose a username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></div>
           <div class="field"><label>Password</label>
-            <div class="pw-toggle-wrap"><input type="password" id="r_password" placeholder="Create a strong password" required><span class="pw-eye" data-eyefor="r_password">👁️</span></div>
+            <div class="pw-toggle-wrap"><input type="password" id="r_password" placeholder="Create a strong password" autocomplete="new-password" required><span class="pw-eye" data-eyefor="r_password">👁️</span></div>
             <div class="field-hint">Tip: aim for 12+ characters with a mix of letters, numbers &amp; symbols. Make a new password just for PassQuest; don't reuse your social media password.</div>
           </div>
           <div class="field checkbox-field">
@@ -1439,7 +1472,7 @@ function viewAuth(mode){
           </div>
           <button type="submit" class="btn btn-primary btn-block">Create account</button>
         </form>
-        <p class="auth-note">💾 Your account is saved only on this device and browser. Sign up on the one you'll keep using, not in a private or incognito window or inside Messenger or Facebook.</p>
+        <p class="auth-note">🌐 Your account is saved online, so you can log in with your school email on any device. Remember your password: PassQuest can't reset it yet.</p>
         <div class="auth-switch">Already have an account? <a href="#" data-go="login">Log in</a></div>
 
         <div class="modal-overlay hidden" id="termsModal">
@@ -1478,7 +1511,7 @@ function viewAuth(mode){
 /* ---------- app shell (top bar + page router) ---------- */
 function viewAppShell(){
   const p = STATE.progress;
-  const user = STATE.users.find(u=>u.username===STATE.session);
+  const user = STATE.user;
   const initials = esc((user?.name||'U').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase());
   // Order follows the learning flow: learn, practise, keep the habit, get rewarded.
   const tabs = [
@@ -2715,7 +2748,7 @@ function pcHasPalindrome(lower){
 function pcDoubles(chars){ let n = 0; for(let i=0;i<chars.length-1;i++) if(chars[i].toLowerCase()===chars[i+1].toLowerCase()) n++; return n; }
 // The student's own name and username parts (3+ letters) count as personal info.
 function pcNameParts(){
-  const u = STATE.users.find(x=>x.username===STATE.session) || {};
+  const u = STATE.user || {};
   return [...new Set(`${u.name||''} ${u.username||''}`.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(w=>w.length>=3))];
 }
 const PC_RULES = [
@@ -3088,25 +3121,61 @@ function showFormMsg(text, ok){
   el.textContent = text; el.className = 'form-msg show ' + (ok?'ok':'err');
 }
 
+// Disable the submit button while Supabase answers, so a double tap doesn't send two requests.
+function setFormBusy(formId, busy){
+  const btn = document.querySelector('#'+formId+' button[type=submit]');
+  if(!btn) return;
+  if(busy){ btn.dataset.label = btn.textContent; btn.textContent = 'Please wait…'; }
+  else if(btn.dataset.label){ btn.textContent = btn.dataset.label; }
+  btn.disabled = busy;
+}
+
+// Accounts made before logins moved online exist only in this browser (STATE.users).
+// Match by username (any capitalization, exact spelling first) or by email, then check the password.
+function findOldAccount(id, password){
+  const isEmail = id.includes('@');
+  const matches = STATE.users
+    .filter(u => isEmail ? String(u.email||'').trim().toLowerCase()===id.toLowerCase() : sameUsername(u.username, id))
+    .sort((a,b) => (b.username===id) - (a.username===id));
+  return matches.find(u=>checkPassword(u, password)) || null;
+}
+function profileOf(u){ return { username:u.username, name:u.name||'', strand:u.strand||'', section:u.section||'' }; }
+
 async function handleLogin(e){
   e.preventDefault();
-  const username = document.getElementById('li_username').value.trim();
+  const id = document.getElementById('li_id').value.trim();
   const password = document.getElementById('li_password').value;
-  // Usernames aren't case-sensitive ("Juan" = "juan"); an exact match wins if an older account differs only by case.
-  const user = STATE.users.find(u=>u.username===username && checkPassword(u, password))
-    || STATE.users.find(u=>sameUsername(u.username, username) && checkPassword(u, password));
-  if(!user){ showFormMsg('Incorrect username or password. Please try again.', false); return; }
-  STATE.session = user.username; // the saved spelling, which progress is stored under
-  await sset('passquest_session', user.username);
-  STATE.progress = (await sget('passquest_progress_'+user.username)) || freshProgress();
-  normalizeProgress();
-  await linkSupabaseUser(user);
-  await touchStreak();
-  refreshEngagement();
-  await saveProgress();
-  STATE.view='dashboard';
-  render(true);
-  toast('👋','Welcome back!', esc(user.name.split(' ')[0])+', continue your quest.');
+  const isEmail = id.includes('@');
+  const old = findOldAccount(id, password);
+  if(!isEmail && !old){
+    showFormMsg(STATE.users.some(u=>sameUsername(u.username, id))
+      ? 'Incorrect username or password. Please try again.'
+      : 'Log in with your school email. A username only works on the device where an older account was made.', false);
+    return;
+  }
+  if(old && !old.email){ showFormMsg('This older account has no email saved. Please sign up again.', false); return; }
+  setFormBusy('loginForm', true);
+  try{
+    let { data, error } = await sb.auth.signInWithPassword({ email: isEmail ? id : old.email, password });
+    if(error && authCode(error)==='invalid_credentials' && old){
+      // First login since accounts moved online: copy this browser's account up, with the same password.
+      ({ data, error } = await sb.auth.signUp({ email: old.email, password, options:{ data: profileOf(old) } }));
+      if(error && authCode(error)==='user_already_exists') error = { code:'old_email_taken' };
+      else if(!error && !data.session) error = { code:'confirm_email_sent' };
+    }
+    if(error){ showFormMsg(authErrorText(error), false); return; }
+    const oldProgress = old ? await sget('passquest_progress_'+old.username) : null;
+    const res = await startSession(data.user, old && profileOf(old), oldProgress, true);
+    if(!res.ok){
+      await sb.auth.signOut({ scope:'local' });
+      showFormMsg(authErrorText(res.error), false);
+      return;
+    }
+    STATE.view='dashboard';
+    render(true);
+    toast('👋','Welcome back!', esc(STATE.user.name.split(' ')[0])+', continue your quest.');
+    if(res.renamed) toast('ℹ️','Your username changed', 'Someone already had your old username online, so yours is now '+esc(STATE.user.username)+'.');
+  } finally { setFormBusy('loginForm', false); }
 }
 
 async function handleRegister(e){
@@ -3120,32 +3189,75 @@ async function handleRegister(e){
 
   if(username.length<3){ showFormMsg('Username must be at least 3 characters.', false); return; }
   if(password.length<6){ showFormMsg('Password must be at least 6 characters.', false); return; }
-  if(STATE.users.find(u=>sameUsername(u.username, username))){ showFormMsg('That username is already taken.', false); return; }
   if(!document.getElementById('r_terms').checked){ showFormMsg('Please agree to the Terms and Conditions to create an account.', false); return; }
 
-  const salt = newSalt();
-  const newUser = {name,strand,section,email,username,salt,passwordHash:hashPassword(password, salt)};
-  STATE.users.push(newUser);
-  await saveUsers();
-  localStorage.removeItem('passquest_user_id');
-  await saveOrGetUser(name, email, supabaseGradeLevel(strand, section), section);
-  await saveConsent(true);
-  STATE.session = username;
-  await sset('passquest_session', username);
-  STATE.progress = freshProgress();
-  await touchStreak();
-  refreshEngagement();
-  await saveProgress();
-  STATE.view='dashboard';
-  render(true);
-  toast('🎉','Account created!', 'Welcome to PassQuest, '+esc(name.split(' ')[0])+'!');
+  const profile = { username, name, strand, section };
+  setFormBusy('regForm', true);
+  try{
+    let { data, error } = await sb.auth.signUp({ email, password, options:{ data: profile } });
+    if(error && authCode(error)==='user_already_exists'){
+      // Already signed up (e.g. last try stopped at a taken username): continue with the same email and password.
+      const again = await sb.auth.signInWithPassword({ email, password });
+      if(again.error){ showFormMsg(authErrorText({ code:'user_already_exists' }), false); return; }
+      ({ data, error } = again);
+    }
+    if(error){ showFormMsg(authErrorText(error), false); return; }
+    if(!data.session){ showFormMsg(authErrorText({ code:'confirm_email_sent' }), false); return; }
+    const res = await startSession(data.user, profile, freshProgress(), false);
+    if(!res.ok){
+      await sb.auth.signOut({ scope:'local' });
+      showFormMsg(authErrorText(res.error), false);
+      return;
+    }
+    if(res.created) await saveConsent(true);
+    STATE.view='dashboard';
+    render(true);
+    if(res.created) toast('🎉','Account created!', 'Welcome to PassQuest, '+esc(name.split(' ')[0])+'!');
+    else toast('👋','You already have an account', 'We logged you in, '+esc(STATE.user.name.split(' ')[0])+'.');
+  } finally { setFormBusy('regForm', false); }
 }
 
 async function handleLogout(){
-  await sset('passquest_session', null);
+  await flushOnlineSave();
+  await sb.auth.signOut({ scope:'local' }); // only this browser; stay logged in on the student's other devices
   localStorage.removeItem('passquest_user_id');
-  STATE.session=null; STATE.progress=null; STATE.view='landing';
+  STATE.session=null; STATE.uid=null; STATE.user=null; STATE.progress=null; STATE.view='landing';
   render(true);
+}
+
+// Supabase Auth and database errors carry a code; older servers only send a message.
+function authCode(err){
+  if(!err) return '';
+  if(err.code) return String(err.code);
+  const m = String(err.message||'').toLowerCase();
+  if(m.includes('invalid login credentials')) return 'invalid_credentials';
+  if(m.includes('already registered')) return 'user_already_exists';
+  if(m.includes('email not confirmed')) return 'email_not_confirmed';
+  return '';
+}
+function authErrorText(err){
+  const code = authCode(err), msg = String((err && err.message) || '');
+  const texts = {
+    '23505': 'That username is already taken. Please choose another one.',
+    invalid_credentials: 'Incorrect email or password. Please try again.',
+    user_already_exists: 'An account with this email already exists. Log in instead.',
+    old_email_taken: 'Your email already has an online PassQuest account with a different password. Log in with your email and that password.',
+    email_not_confirmed: 'Please confirm your email first (check your inbox), then log in.',
+    confirm_email_sent: 'Check your email and click the confirmation link, then log in.',
+    weak_password: 'That password is too weak. Try a longer one.',
+    signup_disabled: 'New sign-ups are turned off right now. Please tell your teacher.',
+    email_address_invalid: 'Please enter a valid school email.',
+    validation_failed: 'Please enter a valid school email.',
+    over_request_rate_limit: 'Too many people are signing in at once. Wait a few seconds and try again.',
+    over_email_send_rate_limit: 'PassQuest couldn’t send a confirmation email. Please tell your teacher.',
+    no_profile: 'Your account details are missing. Sign up again with the same email and password.',
+    timeout: 'Couldn’t reach the server. Check your internet and try again.'
+  };
+  if(texts[code]) return texts[code];
+  if(err && err.status===429) return texts.over_request_rate_limit;
+  if(/sending confirmation email/i.test(msg)) return texts.over_email_send_rate_limit;
+  if((err && err.name==='AuthRetryableFetchError') || /failed to fetch|network|load failed/i.test(msg)) return texts.timeout;
+  return msg || 'Something went wrong. Please try again.';
 }
 
 async function handleMarkLesson(){
@@ -3323,7 +3435,7 @@ function downloadAdvCertificate(){
 }
 
 function drawCertificatePNG(templateURI, filePrefix, toastMsg){
-  const user = STATE.users.find(u=>u.username===STATE.session);
+  const user = STATE.user;
   const img = new Image();
   img.onload = function(){
     const canvas = document.createElement('canvas');
@@ -3376,9 +3488,69 @@ function drawCertificatePNG(templateURI, filePrefix, toastMsg){
 
 /* =========================================================
    22. SUPABASE: DATA FUNCTIONS
-   One group per table. Each reads the Supabase user id from
-   localStorage key passquest_user_id (set at registration).
+   Online accounts first (student_progress, keyed by the Supabase
+   Auth user id). The research tables after them read the Supabase
+   user id from localStorage key passquest_user_id (set at login).
    ========================================================= */
+// ---- Online accounts: one student_progress row per student (profile + whole progress object) ----
+// A request that hangs counts as failed after 15 s, so the login button never spins forever.
+function withTimeout(request){
+  return Promise.race([request, new Promise(done => setTimeout(() => done({ data:null, error:{ code:'timeout' } }), 15000))]);
+}
+const ONLINE_COLUMNS = 'username,name,strand,section,progress';
+
+async function loadOnlineAccount(uid){
+  return withTimeout(sb.from('student_progress').select(ONLINE_COLUMNS).eq('user_id', uid).maybeSingle());
+}
+
+// With renameIfTaken, a username someone already has online gets a number added (juan → juan2).
+async function createOnlineAccount(uid, profile, progress, renameIfTaken){
+  for(let n=1; n<=20; n++){
+    const username = n===1 ? profile.username : profile.username+n;
+    const res = await withTimeout(sb.from('student_progress')
+      .insert({ user_id:uid, username, name:profile.name, strand:profile.strand, section:profile.section, progress })
+      .select(ONLINE_COLUMNS).single());
+    if(!res.error || res.error.code!=='23505') return res;
+    const existing = await loadOnlineAccount(uid); // made by another tab a moment ago?
+    if(existing.data) return existing;
+    if(!renameIfTaken) return res;
+  }
+  return { data:null, error:{ code:'23505' } };
+}
+
+// Progress goes online 0.8 s after the last change (right away when the tab is hidden or the
+// student logs out), one request at a time, so quick clicks don't flood Supabase.
+let onlineSaveTimer = null, onlineSaveChain = Promise.resolve(), onlineSaveWarnedAt = 0;
+function queueOnlineSave(){
+  clearTimeout(onlineSaveTimer);
+  onlineSaveTimer = setTimeout(flushOnlineSave, 800);
+}
+function flushOnlineSave(){
+  if(!onlineSaveTimer) return onlineSaveChain;
+  clearTimeout(onlineSaveTimer); onlineSaveTimer = null;
+  if(!STATE.uid || !STATE.progress) return onlineSaveChain;
+  const uid = STATE.uid, profile = { ...STATE.user }, progress = JSON.parse(JSON.stringify(STATE.progress));
+  onlineSaveChain = onlineSaveChain.then(() => saveOnlineProgress(uid, profile, progress));
+  return onlineSaveChain;
+}
+async function saveOnlineProgress(uid, profile, progress){
+  let { data, error } = await withTimeout(sb.from('student_progress').update({ progress }).eq('user_id', uid).select('user_id'));
+  if(!error && !(data && data.length)){ // row is gone: put it back
+    ({ error } = await withTimeout(sb.from('student_progress').upsert(
+      { user_id:uid, username:profile.username, name:profile.name, strand:profile.strand, section:profile.section, progress },
+      { onConflict:'user_id' })));
+  }
+  if(error){
+    console.error('Online save failed:', error);
+    if(Date.now() - onlineSaveWarnedAt > 60000){
+      onlineSaveWarnedAt = Date.now();
+      toast('⚠️','Progress not saved online','Check your internet. Your next step will try again.');
+    }
+  }
+}
+document.addEventListener('visibilitychange', () => { if(document.visibilityState==='hidden') flushOnlineSave(); });
+window.addEventListener('pagehide', () => flushOnlineSave());
+
 // ---- Save new user OR recognize existing one by email ----
 async function saveOrGetUser(fullName, email, gradeLevel, section) {
   // Check if this email is already registered
